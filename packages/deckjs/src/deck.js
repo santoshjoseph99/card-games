@@ -1,14 +1,14 @@
 let Card = require('./card');
 
 class Deck {
-  cards;
-  index;
-
   constructor(numOfDecks, jokersPerDeck) {
-    this.init(numOfDecks);
+    if(!jokersPerDeck) {
+      jokersPerDeck = 0;
+    }
+    this.init(numOfDecks, jokersPerDeck);
   }
 
-  init(numOfDecks) {
+  init(numOfDecks, jokersPerDeck) {
     this.index = 0;
     this.cards = new Array(52*numOfDecks);
     for(let i = 0; i < numOfDecks; i++) {
@@ -69,11 +69,14 @@ class Deck {
       this.cards[startIdx + 50] = new Card('q', 'd');
       this.cards[startIdx + 51] = new Card('k', 'd');
     }
+    for(let i = 0; i < numOfDecks*jokersPerDeck; i++){
+      this.cards.push(new Card('j', 'j'));
+    }
   }
 
   getCard() {
     if (this.index > this.cards.length - 1) {
-      return null;
+      return undefined;
     }
     return this.cards[this.index++];
   }
