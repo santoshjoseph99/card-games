@@ -1,1 +1,1 @@
-require('src/deck');
+module.exports = require('./src/deck');

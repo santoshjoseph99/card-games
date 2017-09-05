@@ -1,6 +1,6 @@
 let Card = require('./card');
 
-class Deck {
+module.exports = class Deck {
   constructor(numOfDecks, jokersPerDeck) {
     if(!jokersPerDeck) {
       jokersPerDeck = 0;
@@ -90,6 +90,4 @@ class Deck {
       this.cards[x] = t;
     }
   }
-}
-
-module.exports = Deck;
+};
