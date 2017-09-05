@@ -1,0 +1,11 @@
+{
+  "name": "deckjs",
+  "version": "1.0.0",
+  "description": "A deck of cards or multiple decks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Santosh Joseph",
+  "license": "MIT"
+}
