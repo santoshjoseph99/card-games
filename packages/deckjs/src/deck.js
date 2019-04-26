@@ -1,4 +1,5 @@
-let Card = require('./card');
+const Card = require('./card');
+const shuffle = require('lodash/shuffle');
 
 module.exports = class Deck {
   constructor(numOfDecks, jokersPerDeck) {
@@ -18,12 +19,14 @@ module.exports = class Deck {
     for(let i = 0; i < numOfDecks; i++) {
       for(let s = 0; s < suits.length; s++) {
         for(let r = 0; r < ranks.length; r++) {
-          this.cards.push(new Card(ranks[r], suits[s]));
+          const c = new Card(ranks[r], suits[s]);
+          this.cards.push(Object.freeze(c));
         }
       }
     }
     for(let i = 0; i < numOfDecks*jokersPerDeck; i++){
-      this.cards.push(new Card('j', 'j'));
+      const c = new Card('j', 'j');
+      this.cards.push(Object.freeze(c));
     }
   }
 
@@ -32,11 +35,6 @@ module.exports = class Deck {
   }
 
   shuffle() {
-    for(let i = 0; i < this.cards.length; i++){
-      const x = Math.floor(Math.random() * this.cards.length);
-      const t = this.cards[i];
-      this.cards[i] = this.cards[x];
-      this.cards[x] = t;
-    }
+    shuffle(this.cards);
   }
 };
