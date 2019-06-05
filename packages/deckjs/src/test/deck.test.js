@@ -1,6 +1,6 @@
 var chai = require('chai');
 var expect = require('chai').expect;
-var Deck = require('../src/deck');
+var Deck = require('../../lib/deck').default;
 
 function hasNumCardsOfSuit(cards, suite, num) {
   let count = 0;
@@ -34,10 +34,10 @@ describe('Deck', function() {
     });
     it('has 13 cards of each suit', function() {
       let deck = new Deck(1);
-      expect(hasNumCardsOfSuit(deck.cards, 'c', 13)).to.be.true; 
-      expect(hasNumCardsOfSuit(deck.cards, 'd', 13)).to.be.true; 
-      expect(hasNumCardsOfSuit(deck.cards, 'h', 13)).to.be.true; 
-      expect(hasNumCardsOfSuit(deck.cards, 's', 13)).to.be.true; 
+      expect(hasNumCardsOfSuit(deck.cards, 'c', 13)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'd', 13)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'h', 13)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 's', 13)).to.be.true;
     });
   });
   context('one deck with 2 jokers', function(){

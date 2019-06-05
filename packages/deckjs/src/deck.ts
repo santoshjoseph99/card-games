@@ -1,18 +1,20 @@
-const Card = require('./card');
-const shuffle = require('lodash/shuffle');
+import Card from './card';
+import shuffle from 'lodash/shuffle';
 
-module.exports = class Deck {
-  constructor(numOfDecks, jokersPerDeck) {
+export default class Deck {
+  cards:Card[];
+  constructor(numOfDecks:number, jokersPerDeck:number) {
     if(!numOfDecks) {
       numOfDecks = 1;
     }
     if(!jokersPerDeck) {
       jokersPerDeck = 0;
     }
+    this.cards = [];
     this.init(numOfDecks, jokersPerDeck);
   }
 
-  init(numOfDecks, jokersPerDeck) {
+  init(numOfDecks:number, jokersPerDeck:number) {
     const suits = ['c', 'd', 'h', 's'];
     const ranks = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'];
     this.cards = [];
@@ -35,6 +37,6 @@ module.exports = class Deck {
   }
 
   shuffle() {
-    shuffle(this.cards);
+    this.cards = shuffle(this.cards);
   }
 };

@@ -1,14 +1,17 @@
 {
   "name": "deckjs",
-  "version": "1.3.1",
+  "version": "2.0.0",
   "description": "A deck of cards or multiple decks",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "build": "tsc",
+    "test": "mocha src/test"
   },
   "author": "Santosh Joseph",
   "license": "MIT",
   "devDependencies": {
+    "typescript": "^3.5.1",
+    "@types/lodash": "^4.14.133",
     "chai": "^4.1.2",
     "mocha": "^3.5.0"
   },
