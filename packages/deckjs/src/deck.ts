@@ -2,14 +2,8 @@ import Card from './card';
 import shuffle from 'lodash/shuffle';
 
 export default class Deck {
-  cards:Card[];
-  constructor(numOfDecks:number, jokersPerDeck:number) {
-    if(!numOfDecks) {
-      numOfDecks = 1;
-    }
-    if(!jokersPerDeck) {
-      jokersPerDeck = 0;
-    }
+  private cards:Card[];
+  constructor(numOfDecks:number=1, jokersPerDeck:number=0) {
     this.cards = [];
     this.init(numOfDecks, jokersPerDeck);
   }

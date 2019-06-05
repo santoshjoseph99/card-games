@@ -1,13 +1,12 @@
-import Card from './card';
-import shuffle from 'lodash/shuffle';
-export default class Deck {
-    constructor(numOfDecks, jokersPerDeck) {
-        if (!numOfDecks) {
-            numOfDecks = 1;
-        }
-        if (!jokersPerDeck) {
-            jokersPerDeck = 0;
-        }
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const card_1 = __importDefault(require("./card"));
+const shuffle_1 = __importDefault(require("lodash/shuffle"));
+class Deck {
+    constructor(numOfDecks = 1, jokersPerDeck = 0) {
         this.cards = [];
         this.init(numOfDecks, jokersPerDeck);
     }
@@ -18,13 +17,13 @@ export default class Deck {
         for (let i = 0; i < numOfDecks; i++) {
             for (let s = 0; s < suits.length; s++) {
                 for (let r = 0; r < ranks.length; r++) {
-                    const c = new Card(ranks[r], suits[s]);
+                    const c = new card_1.default(ranks[r], suits[s]);
                     this.cards.push(Object.freeze(c));
                 }
             }
         }
         for (let i = 0; i < numOfDecks * jokersPerDeck; i++) {
-            const c = new Card('j', 'j');
+            const c = new card_1.default('j', 'j');
             this.cards.push(Object.freeze(c));
         }
     }
@@ -32,8 +31,9 @@ export default class Deck {
         return this.cards.pop();
     }
     shuffle() {
-        this.cards = shuffle(this.cards);
+        this.cards = shuffle_1.default(this.cards);
     }
 }
+exports.default = Deck;
 ;
 //# sourceMappingURL=deck.js.map
