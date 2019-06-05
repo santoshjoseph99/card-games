@@ -1,2 +1,2 @@
-exports.Card = require('./lib/card');
-exports.Deck = require('./lib/deck');
+exports.Card = require('./lib/card').default;
+exports.Deck = require('./lib/deck').default;
