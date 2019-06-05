@@ -14,7 +14,7 @@ export default class Deck {
     this.init(numOfDecks, jokersPerDeck);
   }
 
-  init(numOfDecks:number, jokersPerDeck:number) {
+  public init(numOfDecks:number, jokersPerDeck:number):void {
     const suits = ['c', 'd', 'h', 's'];
     const ranks = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'];
     this.cards = [];
@@ -32,11 +32,11 @@ export default class Deck {
     }
   }
 
-  getCard() {
+  public getCard() : Card|undefined {
     return this.cards.pop();
   }
 
-  shuffle() {
+  public shuffle() : void {
     this.cards = shuffle(this.cards);
   }
 };
