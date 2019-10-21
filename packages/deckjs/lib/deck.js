@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const card_1 = __importDefault(require("./card"));
 const shuffle_1 = __importDefault(require("lodash/shuffle"));
+const card_1 = __importDefault(require("./card"));
 class Deck {
     constructor(numOfDecks = 1, jokersPerDeck = 0) {
         this.cards = [];
