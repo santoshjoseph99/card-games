@@ -13,8 +13,6 @@ class BlackjackDeck extends deck_1.default {
         this.index = 0;
         this.shufflePointReached = false;
         this.shufflePoint = shufflePoint ? shufflePoint : (numOfDecks * 52) - (numOfDecks * 10);
-        this.index = 0;
-        this.shufflePointReached = false;
     }
     shuffle() {
         super.shuffle();
@@ -29,7 +27,7 @@ class BlackjackDeck extends deck_1.default {
         this.index += 1;
         let c = super.getCard();
         if (!c) {
-            this.shuffle(); // this is wrong
+            this.shuffle(); // TODO: this is wrong
             c = super.getCard();
             if (!c) {
                 c = new card_1.default('1', '1'); // never gets here

@@ -7,4 +7,6 @@ const card_1 = __importDefault(require("./card"));
 exports.Card = card_1.default;
 const deck_1 = __importDefault(require("./deck"));
 exports.Deck = deck_1.default;
+const blackjack_deck_1 = __importDefault(require("./blackjack-deck"));
+exports.BlackjackDeck = blackjack_deck_1.default;
 //# sourceMappingURL=index.js.map

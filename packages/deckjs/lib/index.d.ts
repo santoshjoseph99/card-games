@@ -1,4 +1,5 @@
 import Card from './card';
 import Deck from './deck';
-export { Card, Deck };
+import BlackjackDeck from './blackjack-deck';
+export { Card, Deck, BlackjackDeck };
 //# sourceMappingURL=index.d.ts.map
