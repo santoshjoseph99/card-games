@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const card_1 = __importDefault(require("./card"));
 const deck_1 = __importDefault(require("./deck"));
-exports.ShuffleCard = new card_1.default('0', '0');
+const rank_1 = require("./rank");
+const suit_1 = require("./suit");
+exports.ShuffleCard = new card_1.default(rank_1.Rank.Unknown, suit_1.Suit.Unknown);
 class BlackjackDeck extends deck_1.default {
     constructor(numOfDecks, shufflePoint = 0) {
         super(numOfDecks);
@@ -30,7 +32,7 @@ class BlackjackDeck extends deck_1.default {
             this.shuffle(); // TODO: this is wrong
             c = super.getCard();
             if (!c) {
-                c = new card_1.default('1', '1'); // never gets here
+                c = new card_1.default(rank_1.Rank.Unknown, suit_1.Suit.Unknown); // never gets here
             }
         }
         return c;

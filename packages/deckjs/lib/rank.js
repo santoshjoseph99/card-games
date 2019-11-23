@@ -1,0 +1,41 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Rank;
+(function (Rank) {
+    Rank["Ace"] = "ace";
+    Rank["Two"] = "two";
+    Rank["Three"] = "three";
+    Rank["Four"] = "four";
+    Rank["Five"] = "five";
+    Rank["Six"] = "six";
+    Rank["Seven"] = "seven";
+    Rank["Eight"] = "eight";
+    Rank["Nine"] = "nine";
+    Rank["Ten"] = "ten";
+    Rank["Jack"] = "jack";
+    Rank["Queen"] = "queen";
+    Rank["King"] = "king";
+    Rank["Joker"] = "joker";
+    Rank["Unknown"] = "unknown";
+})(Rank = exports.Rank || (exports.Rank = {}));
+;
+var ShortRank;
+(function (ShortRank) {
+    ShortRank["ace"] = "a";
+    ShortRank["two"] = "2";
+    ShortRank["three"] = "3";
+    ShortRank["four"] = "4";
+    ShortRank["five"] = "5";
+    ShortRank["six"] = "6";
+    ShortRank["seven"] = "7";
+    ShortRank["eight"] = "8";
+    ShortRank["nine"] = "9";
+    ShortRank["ten"] = "t";
+    ShortRank["jack"] = "j";
+    ShortRank["queen"] = "q";
+    ShortRank["king"] = "k";
+    ShortRank["joker"] = "j";
+    ShortRank["unknown"] = "u";
+})(ShortRank = exports.ShortRank || (exports.ShortRank = {}));
+;
+//# sourceMappingURL=rank.js.map

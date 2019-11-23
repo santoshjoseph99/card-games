@@ -1,11 +1,12 @@
 var chai = require('chai');
 var expect = require('chai').expect;
-var Deck = require('../../lib/deck').default;
+var {Deck, Rank, Suit} = require('../../lib/index');
 
-function hasNumCardsOfSuit(cards, suite, num) {
+
+function hasNumCardsOfSuit(cards, suit, num) {
   let count = 0;
   for(let i = 0; i < cards.length; i++){
-    if(cards[i].suite === suite) {
+    if(cards[i].suit === suit) {
       count++;
     }
   }
@@ -15,7 +16,7 @@ function hasNumCardsOfSuit(cards, suite, num) {
 function hasNumOfJokers(cards, num) {
   let count = 0;
   for(let i = 0; i < cards.length; i++){
-    if(cards[i].suite === 'j' && cards[i].rank === 'j') {
+    if(cards[i].suit === 'joker' && cards[i].rank === 'joker') {
       count++;
     }
   }
@@ -34,10 +35,10 @@ describe('Deck', function() {
     });
     it('has 13 cards of each suit', function() {
       let deck = new Deck(1);
-      expect(hasNumCardsOfSuit(deck.cards, 'c', 13)).to.be.true;
-      expect(hasNumCardsOfSuit(deck.cards, 'd', 13)).to.be.true;
-      expect(hasNumCardsOfSuit(deck.cards, 'h', 13)).to.be.true;
-      expect(hasNumCardsOfSuit(deck.cards, 's', 13)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'club', 13)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'diamond', 13)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'heart', 13)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'spade', 13)).to.be.true;
     });
   });
   context('one deck with 2 jokers', function(){
@@ -57,10 +58,10 @@ describe('Deck', function() {
     });
     it('has 13*6 cards of each suit', function () {
       let deck = new Deck(6);
-      expect(hasNumCardsOfSuit(deck.cards, 'c', 13*6)).to.be.true;
-      expect(hasNumCardsOfSuit(deck.cards, 'd', 13*6)).to.be.true;
-      expect(hasNumCardsOfSuit(deck.cards, 'h', 13*6)).to.be.true;
-      expect(hasNumCardsOfSuit(deck.cards, 's', 13*6)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'club', 13*6)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'diamond', 13*6)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'heart', 13*6)).to.be.true;
+      expect(hasNumCardsOfSuit(deck.cards, 'spade', 13*6)).to.be.true;
     });
   });
   context('6 decks with 2 jokers in each deck', function(){

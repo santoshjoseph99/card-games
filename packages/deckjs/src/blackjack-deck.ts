@@ -1,7 +1,9 @@
 import Card from './card';
 import Deck from './deck';
+import {Rank} from './rank';
+import {Suit} from './suit';
 
-export const ShuffleCard = new Card('0', '0');
+export const ShuffleCard = new Card(Rank.Unknown, Suit.Unknown);
 
 export default class BlackjackDeck extends Deck {
   private shufflePoint:number = 0;
@@ -30,7 +32,7 @@ export default class BlackjackDeck extends Deck {
       this.shuffle(); // TODO: this is wrong
       c = super.getCard();
       if(!c) {
-        c = new Card('1','1'); // never gets here
+        c = new Card(Rank.Unknown, Suit.Unknown); // never gets here
       }
     }
     return c;
