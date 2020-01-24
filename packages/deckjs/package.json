@@ -1,6 +1,6 @@
 {
   "name": "deckjs",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A deck of cards or multiple decks",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
