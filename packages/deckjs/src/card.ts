@@ -13,7 +13,7 @@ export default class Card {
 
   static getBlackjackValue(rank:Rank): number {
     switch(rank) {
-      case Rank.Ace: return 1;
+      case Rank.Ace: return 0; // TODO: this should return {1,11} or [1,11]
       case Rank.Two: return 2;
       case Rank.Three: return 3;
       case Rank.Four: return 4;
@@ -28,7 +28,7 @@ export default class Card {
       case Rank.King:
         return 10;
       default:
-        return 0;
+        return -1;
     }
   }
 

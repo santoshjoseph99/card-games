@@ -13,7 +13,7 @@ class Card {
     }
     static getBlackjackValue(rank) {
         switch (rank) {
-            case rank_1.Rank.Ace: return 1;
+            case rank_1.Rank.Ace: return 0; // TODO: this should return {1,11} or [1,11]
             case rank_1.Rank.Two: return 2;
             case rank_1.Rank.Three: return 3;
             case rank_1.Rank.Four: return 4;
@@ -28,7 +28,7 @@ class Card {
             case rank_1.Rank.King:
                 return 10;
             default:
-                return 0;
+                return -1;
         }
     }
     toLongString() {
