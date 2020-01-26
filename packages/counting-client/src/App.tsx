@@ -38,7 +38,6 @@ class App extends React.Component<{}, IAppState> {
    * @param card 
    */
   cardCallback(player: number, card: Card) {
-    console.log(player, card);
     this.cards[player].push(card);
     const scores = this.blackjackCounter.getBlackjackScore(this.cards[player]);
     this.scores[player] = this.blackjackCounter.getHighestNonBustScore(scores);
@@ -62,7 +61,6 @@ class App extends React.Component<{}, IAppState> {
       const card = this.blackjackCounter.getCard();
       this.cards[player].push(card);
       const scores = this.blackjackCounter.getBlackjackScore(this.cards[player]);
-      console.log('SCORE:', scores);
       const score = this.blackjackCounter.getHighestNonBustScore(scores);
       if(score) {
         this.scores[player] = score;
@@ -89,9 +87,25 @@ class App extends React.Component<{}, IAppState> {
     this.newGame();
   }
 
+  newHand = () => {    this.cards = [];
+    this.scores = [];
+    this.cards[0] = [];
+    this.cards[1] = [];
+    this.disableHit = [false, false];
+    this.setState({
+      cards: this.cards,
+      scores: this.scores,
+      disableHit: this.disableHit,
+    });
+    this.blackjackCounter.startHand();
+  }
+
   render() {
     return (
       <div>
+        <div>
+          <button onClick={this.newHand}>New Hand</button>
+        </div>
         <Player 
           name={'me'}
           score={this.state.scores[1]}
