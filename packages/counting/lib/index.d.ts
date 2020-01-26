@@ -11,6 +11,7 @@ export default class BlackjackCounter {
     readonly count: number;
     shuffle(): void;
     startGame(): void;
+    startHand(): void;
     endGame(): void;
     getCard(): Card;
     getCountFromCards(cards: Card[]): number;

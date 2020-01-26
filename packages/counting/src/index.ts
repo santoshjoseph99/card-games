@@ -35,6 +35,10 @@ export default class BlackjackCounter {
 
   public startGame(): void {
     this.countNum = 0;
+    this.startHand();
+  }
+
+  public startHand(): void {
     const d1 = this.deck.getCard();
     const d2 = this.deck.getCard();
     const p1 = this.deck.getCard();
@@ -46,7 +50,6 @@ export default class BlackjackCounter {
     this.cb(1, p2);
     this.countNum += this.getCount(p2);
     this.cb(0, d2);
-    this.countNum += this.getCount(d2);
   }
 
   public endGame(): void {
