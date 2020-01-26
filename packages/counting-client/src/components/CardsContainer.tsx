@@ -10,7 +10,7 @@ const CardsContainer: React.FC<ICardsProps> = (props: ICardsProps) => {
   return (
     <>
       {
-        props.list.map(c => <Card name={c} size={props.size} />)
+        props.list.map((c:string, i:number) => <Card key={i} name={c} size={props.size} />)
       }
     </>
   )
