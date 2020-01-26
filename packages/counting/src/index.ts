@@ -1,6 +1,8 @@
 import { BlackjackDeck, Card, Rank, Suit } from 'deckjs';
+import Hand from './hand';
+import { max } from 'lodash';
 
-export type CardCallback = (player:number, card:Card) => void;
+export type CardCallback = (player: number, card: Card) => void;
 export {
   Card,
   Rank,
@@ -8,13 +10,13 @@ export {
 }
 
 export default class BlackjackCounter {
-  private deck:BlackjackDeck;
-  private cb:CardCallback;
-  private numOfDecks:number;
-  private numOfPlayers:number;
-  private countNum:number;
+  private deck: BlackjackDeck;
+  private cb: CardCallback;
+  private numOfDecks: number;
+  private numOfPlayers: number;
+  private countNum: number;
 
-  constructor(cb:CardCallback, numOfDecks:number = 6,  numOfPlayers:number = 1) {
+  constructor(cb: CardCallback, numOfDecks: number = 6, numOfPlayers: number = 1) {
     // TODO: strategyType
     this.numOfDecks = numOfDecks;
     this.numOfPlayers = numOfPlayers;
@@ -31,7 +33,7 @@ export default class BlackjackCounter {
     this.deck.shuffle();
   }
 
-  public startGame():void {
+  public startGame(): void {
     this.countNum = 0;
     const d1 = this.deck.getCard();
     const d2 = this.deck.getCard();
@@ -47,27 +49,41 @@ export default class BlackjackCounter {
     this.countNum += this.getCount(d2);
   }
 
-  public endGame():void {
+  public endGame(): void {
   }
 
-  public getCard() {
+  public getCard(): Card {
     const c = this.deck.getCard();
     this.countNum += this.getCount(c);
     return c;
   }
 
-  private getCount(card:Card) {
-    if(card.rank === Rank.Ace ||
-       card.rank === Rank.Ten ||
-       card.rank === Rank.Jack ||
-       card.rank === Rank.Queen ||
-       card.rank === Rank.King) {
+  public getCountFromCards(cards: Card[]): number {
+    return cards.map(this.getCount).reduce((a: number, b: number) => a + b, 0);
+  }
+
+  public getBlackjackScore(cards: Card[]): number[] {
+    const results = Hand.getHandValues(cards);
+    console.log('RESULTS:', results);
+    return results; 
+  }
+
+  public getHighestNonBustScore(scores: number[]): number {
+    return max(scores.filter(x => x < 22)) || 0;
+  }
+
+  private getCount(card: Card): number {
+    if (card.rank === Rank.Ace ||
+      card.rank === Rank.Ten ||
+      card.rank === Rank.Jack ||
+      card.rank === Rank.Queen ||
+      card.rank === Rank.King) {
       return -1;
     } else if (card.rank === Rank.Two ||
-               card.rank === Rank.Three ||
-               card.rank === Rank.Four ||
-               card.rank === Rank.Five ||
-               card.rank === Rank.Six) {
+      card.rank === Rank.Three ||
+      card.rank === Rank.Four ||
+      card.rank === Rank.Five ||
+      card.rank === Rank.Six) {
       return 1;
     } else {
       return 0;
@@ -83,6 +99,6 @@ export default class BlackjackCounter {
    +, - for keeping count or -2, -1, 0, +1, +2 for buttons and have a highlight over each card
    OR
    +, - buttons and then prompt the player for action and then +/-. then dealer happens every 1 second
-   
+
 
 */

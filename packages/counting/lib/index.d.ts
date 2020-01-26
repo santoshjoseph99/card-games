@@ -13,6 +13,9 @@ export default class BlackjackCounter {
     startGame(): void;
     endGame(): void;
     getCard(): Card;
+    getCountFromCards(cards: Card[]): number;
+    getBlackjackScore(cards: Card[]): number[];
+    getHighestNonBustScore(scores: number[]): number;
     private getCount;
 }
 //# sourceMappingURL=index.d.ts.map

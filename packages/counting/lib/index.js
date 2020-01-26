@@ -1,9 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const deckjs_1 = require("deckjs");
 exports.Card = deckjs_1.Card;
 exports.Rank = deckjs_1.Rank;
 exports.Suit = deckjs_1.Suit;
+const hand_1 = __importDefault(require("./hand"));
+const lodash_1 = require("lodash");
 class BlackjackCounter {
     constructor(cb, numOfDecks = 6, numOfPlayers = 1) {
         // TODO: strategyType
@@ -41,6 +46,17 @@ class BlackjackCounter {
         this.countNum += this.getCount(c);
         return c;
     }
+    getCountFromCards(cards) {
+        return cards.map(this.getCount).reduce((a, b) => a + b, 0);
+    }
+    getBlackjackScore(cards) {
+        const results = hand_1.default.getHandValues(cards);
+        console.log('RESULTS:', results);
+        return results;
+    }
+    getHighestNonBustScore(scores) {
+        return lodash_1.max(scores.filter(x => x < 22)) || 0;
+    }
     getCount(card) {
         if (card.rank === deckjs_1.Rank.Ace ||
             card.rank === deckjs_1.Rank.Ten ||
@@ -70,7 +86,7 @@ exports.default = BlackjackCounter;
    +, - for keeping count or -2, -1, 0, +1, +2 for buttons and have a highlight over each card
    OR
    +, - buttons and then prompt the player for action and then +/-. then dealer happens every 1 second
-   
+
 
 */ 
 //# sourceMappingURL=index.js.map

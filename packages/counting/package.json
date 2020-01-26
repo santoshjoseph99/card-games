@@ -6,7 +6,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "mocha src/test"
+    "test": "mocha -r ts-node/register src/test/hand.test.ts"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,16 @@
   },
   "homepage": "https://github.com/santoshjoseph99/counting#readme",
   "dependencies": {
-    "deckjs": "^3.0.0"
+    "deckjs": "^3.1.1",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.5.0",
     "chai": "^4.2.0",
     "mocha": "^6.2.1",
+    "ts-node": "^8.6.2",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.6.4"
