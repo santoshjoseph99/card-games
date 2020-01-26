@@ -1,6 +1,6 @@
 import { BlackjackDeck, Card, Rank, Suit } from 'deckjs';
 import Hand from './hand';
-import { max } from 'lodash';
+import { max, min } from 'lodash';
 
 export type CardCallback = (player: number, card: Card) => void;
 export {
@@ -70,6 +70,10 @@ export default class BlackjackCounter {
 
   public getHighestNonBustScore(scores: number[]): number {
     return max(scores.filter(x => x < 22)) || 0;
+  }
+
+  public getLowestBustScore(scores: number[]): number {
+    return min(scores.filter(x => x > 21)) || 0;
   }
 
   private getCount(card: Card): number {

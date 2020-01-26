@@ -57,6 +57,9 @@ class BlackjackCounter {
     getHighestNonBustScore(scores) {
         return lodash_1.max(scores.filter(x => x < 22)) || 0;
     }
+    getLowestBustScore(scores) {
+        return lodash_1.min(scores.filter(x => x > 21)) || 0;
+    }
     getCount(card) {
         if (card.rank === deckjs_1.Rank.Ace ||
             card.rank === deckjs_1.Rank.Ten ||
