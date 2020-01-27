@@ -9,16 +9,19 @@ interface IAppState {
   cards: Card[][],
   scores: number[],
   disableHit: boolean[],
+  handEnded: boolean,
 }
 
 class App extends React.Component<{}, IAppState> {
-  private blackjackCounter:BlackjackCounter;
-  private cards:Card[][];
-  private scores:number[];
+  private blackjackCounter: BlackjackCounter;
+  private cards: Card[][];
+  private scores: number[];
   private disableHit: boolean[];
+  private handEnded: boolean;
 
-  constructor(props:any) {
+  constructor(props: any) {
     super(props);
+    this.handEnded = false;
     this.blackjackCounter = new BlackjackCounter(this.cardCallback.bind(this));
     this.cards = [];
     this.scores = [];
@@ -28,7 +31,8 @@ class App extends React.Component<{}, IAppState> {
     this.state = {
       cards: this.cards,
       scores: [],
-      disableHit: [false, false]
+      disableHit: [false, false],
+      handEnded: this.handEnded,
     }
   }
 
@@ -52,17 +56,13 @@ class App extends React.Component<{}, IAppState> {
    * @param player 
    * @param hit 
    */
-  actionCallback(player: number, hit:boolean) {
-    if(player === 0) {
-      
-    }
-    // called when a player makes an action
-    if(hit) {
+  actionCallback(player: number, hit: boolean) {
+    if (hit) {
       const card = this.blackjackCounter.getCard();
       this.cards[player].push(card);
       const scores = this.blackjackCounter.getBlackjackScore(this.cards[player]);
       const score = this.blackjackCounter.getHighestNonBustScore(scores);
-      if(score) {
+      if (score) {
         this.scores[player] = score;
       } else {
         this.scores[player] = this.blackjackCounter.getLowestBustScore(scores);
@@ -74,7 +74,42 @@ class App extends React.Component<{}, IAppState> {
         disableHit: this.disableHit,
       });
     } else {
-
+      this.disableHit[player] = true;
+      this.setState({
+        disableHit: this.disableHit
+      });
+      if(this.scores[1] > 21) {
+        this.setState({
+          handEnded: true
+        });
+        return;
+      }
+      let scores = this.blackjackCounter.getBlackjackScore(this.cards[0]);
+      let score = this.blackjackCounter.getHighestNonBustScore(scores);
+      if (score) {
+        while (score < 17) {
+          const card = this.blackjackCounter.getCard();
+          this.cards[0].push(card);
+          scores = this.blackjackCounter.getBlackjackScore(this.cards[0]);
+          score = this.blackjackCounter.getHighestNonBustScore(scores);
+          this.scores[0] = score === 0 ?
+            this.blackjackCounter.getLowestBustScore(scores) : score;
+          setTimeout(() => {
+            this.setState({
+              cards: this.cards,
+              scores: this.scores,
+            });
+          }, 500);
+          if(score === 0){
+            break;
+          }
+        }
+      } else {
+        //bust
+      }
+      this.setState({
+        handEnded: true
+      });
     }
   }
 
@@ -87,7 +122,9 @@ class App extends React.Component<{}, IAppState> {
     this.newGame();
   }
 
-  newHand = () => {    this.cards = [];
+  newHand = () => {
+    this.handEnded = false;
+    this.cards = [];
     this.scores = [];
     this.cards[0] = [];
     this.cards[1] = [];
@@ -96,8 +133,29 @@ class App extends React.Component<{}, IAppState> {
       cards: this.cards,
       scores: this.scores,
       disableHit: this.disableHit,
+      handEnded: false,
     });
     this.blackjackCounter.startHand();
+  }
+
+  getWinner() {
+    const dealerScores = this.blackjackCounter.getBlackjackScore(this.cards[0]);
+    const dealerScore = this.blackjackCounter.getHighestNonBustScore(dealerScores);
+    const playerScores = this.blackjackCounter.getBlackjackScore(this.cards[1]);
+    const playerScore = this.blackjackCounter.getHighestNonBustScore(playerScores);
+    if(playerScore === 0) {
+      return 'Dealer wins, Player busts';
+    }
+    if(dealerScore === 0) {
+      return 'Player wins, Dealer busts';
+    }
+    if(playerScore === dealerScore) {
+      return 'Push!';
+    } else if (playerScore > dealerScore) {
+      return 'Player Wins';
+    } else if (playerScore < dealerScore) {
+      return 'Dealer Wins';
+    }
   }
 
   render() {
@@ -106,17 +164,16 @@ class App extends React.Component<{}, IAppState> {
         <div>
           <button onClick={this.newHand}>New Hand</button>
         </div>
-        <Player 
+        <Player
           name={'me'}
           score={this.state.scores[1]}
           cards={this.state.cards[1]}
           actionCb={this.actionCallback.bind(this)}
           disableHit={this.state.disableHit[1]} />
         <Dealer
-          cards={this.state.cards[0]}
-          actionCb={this.actionCallback.bind(this)}
-          disableHit={false} />
+          cards={this.state.cards[0]} />
         <Count count={this.blackjackCounter.count} />
+        <div>{this.state.handEnded && <span>Result: {this.getWinner()}</span>}</div>
       </div>
     );
   }

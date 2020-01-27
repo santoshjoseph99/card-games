@@ -15,7 +15,7 @@ const Player: React.FC<IPlayerProps> = (props:IPlayerProps) => {
         <div>Player: {name}</div>
         <button onClick={getCard} disabled={disableHit}>Hit</button>
         <button onClick={stand}>Stand</button>
-        <div>Score: {score}</div>
+        <div><span>Blackjack Score: {score}</span></div>
         <CardsContainer list={cardsStrList} size={CardSize.small} />
       </div>
     </div>
