@@ -53,8 +53,11 @@ class BlackjackCounter {
     }
     getBlackjackScore(cards) {
         const results = hand_1.default.getHandValues(cards);
-        console.log('RESULTS:', results);
         return results;
+    }
+    isSoftSeventeen(cards) {
+        return cards[0].rank === deckjs_1.Rank.Ace && cards[1].rank === deckjs_1.Rank.Six ||
+            cards[1].rank === deckjs_1.Rank.Ace && cards[0].rank === deckjs_1.Rank.Six;
     }
     getHighestNonBustScore(scores) {
         return lodash_1.max(scores.filter(x => x < 22)) || 0;

@@ -16,6 +16,7 @@ export default class BlackjackCounter {
     getCard(): Card;
     getCountFromCards(cards: Card[]): number;
     getBlackjackScore(cards: Card[]): number[];
+    isSoftSeventeen(cards: Card[]): boolean;
     getHighestNonBustScore(scores: number[]): number;
     getLowestBustScore(scores: number[]): number;
     private getCount;

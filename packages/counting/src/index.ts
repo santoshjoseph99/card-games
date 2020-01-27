@@ -67,8 +67,12 @@ export default class BlackjackCounter {
 
   public getBlackjackScore(cards: Card[]): number[] {
     const results = Hand.getHandValues(cards);
-    console.log('RESULTS:', results);
     return results; 
+  }
+
+  public isSoftSeventeen(cards: Card[]): boolean {
+    return cards[0].rank === Rank.Ace && cards[1].rank === Rank.Six ||
+      cards[1].rank === Rank.Ace && cards[0].rank === Rank.Six;
   }
 
   public getHighestNonBustScore(scores: number[]): number {
