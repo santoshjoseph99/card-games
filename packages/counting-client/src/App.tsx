@@ -2,8 +2,30 @@ import React from 'react';
 import './App.css';
 import Dealer from './components/Dealer';
 import Player from './components/Player';
-import BlackjackCounter, { Card } from 'blackjack-counting';
+import {BlackjackCounter, Card} from 'blackjack-counting';
 import Count from './components/Count';
+
+/*
+1. pick counting system (veryify counting is working)
+2. blackjack play. 
+      split hands
+      double down
+      surrenender
+      insurance
+      check for player natural (hide hit button)
+      hide dealer upcard
+      check for dealer natural (disable hit button)
+      change stand button to "something else" when player busts or natural
+3. more attractive visuals
+4. user login (save scores)
+5. automatic next hand option
+6. side count systems support
+7. deck options (number, card visual types)
+8. deploy website
+9. refactor into better components (lerna.js for package management).
+    rename App.tsx into something else and move it into components directory
+    better state management (classes instead of cards, Player, Dealer)
+*/
 
 interface IAppState {
   cards: Card[][],
@@ -171,7 +193,8 @@ class App extends React.Component<{}, IAppState> {
           actionCb={this.actionCallback.bind(this)}
           disableHit={this.state.disableHit[1]} />
         <Dealer
-          cards={this.state.cards[0]} />
+          cards={this.state.cards[0]} 
+          score={this.state.scores[0]} />
         <Count count={this.blackjackCounter.count} />
         <div>{this.state.handEnded && <span>Result: {this.getWinner()}</span>}</div>
       </div>

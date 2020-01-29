@@ -1,7 +1,15 @@
 import React from 'react';
-import IPlayerProps from './IPlayerProps'
 import { CardSize } from './Card';
 import CardsContainer from './CardsContainer';
+import { Card } from 'blackjack-counting';
+
+export interface IPlayerProps {
+  cards: Card[];
+  disableHit: boolean;
+  actionCb: (p:number, x:boolean) => void;
+  name: string;
+  score: number;
+}
 
 const Player: React.FC<IPlayerProps> = (props:IPlayerProps) => {
   const {cards, actionCb, name, score, disableHit} = props;

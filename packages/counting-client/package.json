@@ -1,6 +1,6 @@
 {
   "name": "counting-client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.21",
@@ -8,10 +8,10 @@
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
     "aphrodite": "^2.4.0",
-    "blackjack-counting": "file:../counting",
+    "blackjack-counting": "^1.1.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0",
+    "react-scripts": "^3.3.0",
     "typescript": "3.6.4"
   },
   "scripts": {
