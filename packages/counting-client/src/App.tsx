@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Dealer from './components/Dealer';
 import Player from './components/Player';
-import {BlackjackCounter, Card} from 'blackjack-counting';
+import {BlackjackCounter, Card, Hand} from 'blackjack-counting';
 import Count from './components/Count';
 
 /*
@@ -10,13 +10,10 @@ import Count from './components/Count';
 2. blackjack play. 
       split hands
       double down
-      surrenender
+      surrender
       insurance
-      check for player natural (hide hit button)
-      hide dealer upcard
-      check for dealer natural (disable hit button)
       change stand button to "something else" when player busts or natural
-3. more attractive visuals
+3. more attractive visuals (ms fabric)
 4. user login (save scores)
 5. automatic next hand option
 6. side count systems support
@@ -67,9 +64,21 @@ class App extends React.Component<{}, IAppState> {
     this.cards[player].push(card);
     const scores = this.blackjackCounter.getBlackjackScore(this.cards[player]);
     this.scores[player] = this.blackjackCounter.getHighestNonBustScore(scores);
+    if(this.cards[1].length === 2 && Hand.isNatural(this.cards[1])) {
+      this.disableHit[1] = true;
+    }
+    if(this.cards[0].length === 2 && Hand.isNatural(this.cards[0])) {
+      this.disableHit[1] = true;
+      this.handEnded = true;
+    }
+    if(player === 0 && this.cards[0].length === 2) {
+      card.faceUp = false;
+    }
     this.setState({
       cards: this.cards,
       scores: this.scores,
+      disableHit: this.disableHit,
+      handEnded: this.handEnded,
     });
   }
 
@@ -97,10 +106,12 @@ class App extends React.Component<{}, IAppState> {
       });
     } else {
       this.disableHit[player] = true;
+      this.cards[0][1].faceUp = true;
       this.setState({
-        disableHit: this.disableHit
+        disableHit: this.disableHit,
+        cards: this.cards,
       });
-      if(this.scores[1] > 21) {
+      if(this.scores[1] > 21 || Hand.isNatural(this.cards[1])) {
         this.setState({
           handEnded: true
         });

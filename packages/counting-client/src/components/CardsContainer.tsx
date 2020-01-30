@@ -1,8 +1,9 @@
 import React from 'react';
-import Card, { CardSize } from './Card';
+import CardImage, { CardSize } from './CardImage';
+import { Card } from 'blackjack-counting';
 
 export interface ICardsProps {
-  list: string[];
+  list: Card[];
   size: CardSize;
 }
 
@@ -10,7 +11,7 @@ const CardsContainer: React.FC<ICardsProps> = (props: ICardsProps) => {
   return (
     <>
       {
-        props.list.map((c:string, i:number) => <Card key={i} name={c} size={props.size} />)
+        props.list.map((c:Card, i:number) => <CardImage key={i} card={c} size={props.size} />)
       }
     </>
   )
