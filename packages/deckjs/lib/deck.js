@@ -24,13 +24,13 @@ class Deck {
             for (let s = 0; s < suits.length; s++) {
                 for (let r = 0; r < ranks.length; r++) {
                     const c = new card_1.default(ranks[r], suits[s]);
-                    this.cards.push(Object.freeze(c));
+                    this.cards.push(c);
                 }
             }
         }
         for (let i = 0; i < numOfDecks * jokersPerDeck; i++) {
             const c = new card_1.default(rank_1.Rank.Joker, suit_1.Suit.Joker);
-            this.cards.push(Object.freeze(c));
+            this.cards.push(c);
         }
     }
     getCard() {

@@ -22,13 +22,13 @@ export default class Deck {
       for (let s = 0; s < suits.length; s++) {
         for (let r = 0; r < ranks.length; r++) {
           const c = new Card(ranks[r], suits[s]);
-          this.cards.push(Object.freeze(c));
+          this.cards.push(c);
         }
       }
     }
     for (let i = 0; i < numOfDecks * jokersPerDeck; i++) {
       const c = new Card(Rank.Joker, Suit.Joker);
-      this.cards.push(Object.freeze(c));
+      this.cards.push(c);
     }
   }
 

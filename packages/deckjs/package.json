@@ -1,6 +1,6 @@
 {
   "name": "deckjs",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "A deck of cards or multiple decks",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -11,12 +11,12 @@
   "author": "Santosh Joseph",
   "license": "MIT",
   "devDependencies": {
-    "@types/lodash": "^4.14.133",
+    "@types/lodash": "^4.14.149",
     "chai": "^4.1.2",
     "mocha": "^6.2.2",
-    "tslint": "^5.17.0",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.7.5"
   },
   "dependencies": {
     "lodash": ">=4.17.13"
