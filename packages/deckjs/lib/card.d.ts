@@ -3,8 +3,9 @@ import { Suit } from "./suit";
 export default class Card {
     rank: Rank;
     suit: Suit;
+    faceUp: boolean;
     blackjackValue: number;
-    constructor(rank: Rank, suit: Suit);
+    constructor(rank: Rank, suit: Suit, faceUp?: boolean);
     setBlackjackValue(v: number): void;
     static getBlackjackValue(rank: Rank): number;
     toLongString(): string;

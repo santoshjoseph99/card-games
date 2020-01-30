@@ -3,9 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const rank_1 = require("./rank");
 const suit_1 = require("./suit");
 class Card {
-    constructor(rank, suit) {
+    constructor(rank, suit, faceUp = true) {
         this.rank = rank;
         this.suit = suit;
+        this.faceUp = faceUp;
         this.blackjackValue = Card.getBlackjackValue(rank);
     }
     setBlackjackValue(v) {
