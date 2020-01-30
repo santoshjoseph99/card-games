@@ -1,6 +1,6 @@
 {
   "name": "blackjack-counting",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "practice counting cards",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,18 +23,18 @@
   },
   "homepage": "https://github.com/santoshjoseph99/counting#readme",
   "dependencies": {
-    "deckjs": "^3.1.1",
+    "deckjs": "^3.2.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^13.5.0",
+    "@types/node": "^13.5.2",
     "chai": "^4.2.0",
-    "mocha": "^6.2.1",
+    "mocha": "^6.2.2",
     "ts-node": "^8.6.2",
-    "tslint": "^5.20.0",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.5"
   }
 }

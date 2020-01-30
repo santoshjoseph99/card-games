@@ -8,7 +8,7 @@ export default class BlackjackCounter {
     private numOfPlayers;
     private countNum;
     constructor(cb: CardCallback, numOfDecks?: number, numOfPlayers?: number);
-    readonly count: number;
+    get count(): number;
     shuffle(): void;
     startGame(): void;
     startHand(): void;
