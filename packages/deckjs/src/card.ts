@@ -3,7 +3,7 @@ import { Suit, ShortSuit } from "./suit";
 
 export default class Card {
   blackjackValue: number;
-  constructor(public rank:Rank, public suit:Suit) {
+  constructor(public rank:Rank, public suit:Suit, public faceUp:boolean = true) {
     this.blackjackValue = Card.getBlackjackValue(rank);
   }
 
