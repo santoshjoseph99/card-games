@@ -9,15 +9,13 @@ export interface IDealerProps {
 }
 
 const Dealer: React.FC<IDealerProps> = (props: IDealerProps) => {
-  const {cards, score} = props;
+  const { cards, score } = props;
 
   return (
-    <div>
-      <div>
-        <div><span>{`Dealer (Score: ${score})`}</span> </div>
-        <CardsContainer list={cards} size={CardSize.small} />
-      </div>
-    </div>
+    <>
+      <div><span>{`Dealer (Score: ${score})`}</span> </div>
+      <CardsContainer list={cards} size={CardSize.small} />
+    </>
   );
 }
 
