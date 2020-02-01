@@ -10,7 +10,6 @@ import BlackjackCounterUX from './components/BlackjackCounterUX';
       surrender
       insurance
       change stand button to "something else" when player busts or natural
-3. more attractive visuals (ms fabric)
 4. user login (save scores)
 5. automatic next hand option
 6. side count systems support
@@ -18,6 +17,7 @@ import BlackjackCounterUX from './components/BlackjackCounterUX';
 8. deploy website
 9. refactor into better components (lerna.js for package management).
 a. TESTING
+b. show all cards that are counted and corresponding counts (in pairs)
 */
 
 class App extends React.Component<{}, {}> {

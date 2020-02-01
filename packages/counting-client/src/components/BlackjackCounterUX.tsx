@@ -2,7 +2,8 @@ import React from 'react';
 import Dealer from './Dealer';
 import Player from './Player';
 import Count from './Count';
-import {BlackjackCounter, Card, Hand} from 'blackjack-counting';
+import { BlackjackCounter, Card, Hand } from 'blackjack-counting';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 
 interface Player {
   cards: Card[];
@@ -53,22 +54,22 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
    * @param card 
    */
   cardCallback(playerNum: number, card: Card) {
-    if(playerNum === 0) {
+    if (playerNum === 0) {
       this.dealer.cards.push(card);
       const scores = this.blackjackCounter.getBlackjackScore(this.dealer.cards);
       this.dealer.score = this.blackjackCounter.getHighestNonBustScore(scores);
-      if(this.dealer.cards.length === 2 && Hand.isNatural(this.dealer.cards)) {
+      if (this.dealer.cards.length === 2 && Hand.isNatural(this.dealer.cards)) {
         this.player.disableHit = true;
         this.handEnded = true;
       }
-      if(this.dealer.cards.length === 2){
+      if (this.dealer.cards.length === 2) {
         card.faceUp = false;
       }
     } else {
       this.player.cards.push(card);
       const scores = this.blackjackCounter.getBlackjackScore(this.player.cards);
       this.player.score = this.blackjackCounter.getHighestNonBustScore(scores);
-      if(this.player.cards.length === 2 && Hand.isNatural(this.player.cards)) {
+      if (this.player.cards.length === 2 && Hand.isNatural(this.player.cards)) {
         this.player.disableHit = true;
       }
     }
@@ -106,7 +107,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
         player: this.player,
         dealer: this.dealer,
       });
-      if(this.player.score > 21 || Hand.isNatural(this.player.cards)) {
+      if (this.player.score > 21 || Hand.isNatural(this.player.cards)) {
         this.setState({
           handEnded: true
         });
@@ -127,8 +128,8 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
               player: this.player,
               dealer: this.dealer,
             });
-          }, 500);
-          if(score === 0){
+          }, 1000);
+          if (score === 0) {
             break;
           }
         }
@@ -174,13 +175,13 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
     const dealerScore = this.blackjackCounter.getHighestNonBustScore(dealerScores);
     const playerScores = this.blackjackCounter.getBlackjackScore(this.player.cards);
     const playerScore = this.blackjackCounter.getHighestNonBustScore(playerScores);
-    if(playerScore === 0) {
+    if (playerScore === 0) {
       return 'Dealer wins, Player busts';
     }
-    if(dealerScore === 0) {
+    if (dealerScore === 0) {
       return 'Player wins, Dealer busts';
     }
-    if(playerScore === dealerScore) {
+    if (playerScore === dealerScore) {
       return 'Push!';
     } else if (playerScore > dealerScore) {
       return 'Player Wins';
@@ -193,7 +194,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
     return (
       <div>
         <div>
-          <button onClick={this.newHand}>New Hand</button>
+          <PrimaryButton onClick={this.newHand}>New Hand</PrimaryButton>
         </div>
         <Player
           name={'me'}
@@ -202,7 +203,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
           actionCb={this.actionCallback.bind(this)}
           disableHit={this.state.player.disableHit} />
         <Dealer
-          cards={this.state.dealer.cards} 
+          cards={this.state.dealer.cards}
           score={this.state.dealer.score} />
         <Count count={this.blackjackCounter.count} />
         <div>{this.state.handEnded && <span>Result: {this.getWinner()}</span>}</div>
