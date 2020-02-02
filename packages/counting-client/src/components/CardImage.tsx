@@ -21,7 +21,7 @@ const CardImage: React.FC<ICardProps> = (props: ICardProps) => {
   }
   const src = card.faceUp ?
     `/images/PNG/${card.toShortString()}.png` :
-    '/images/PNG/green_back.png';
+    '/images/PNG/yellow_back.png';
 
   return (
     <img className={cardTypeClass} src={src} alt={"TODO"} />

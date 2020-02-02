@@ -16,8 +16,9 @@ import BlackjackCounterUX from './components/BlackjackCounterUX';
 7. deck options (number, card visual types)
 8. deploy website
 9. refactor into better components (lerna.js for package management).
+  * separate logic and UX from the blackjackCounterUX class
 a. TESTING
-b. show all cards that are counted and corresponding counts (in pairs)
+c. CSS transitions (show deck)...then animate cards from deck to hand and also flipping dealer card
 */
 
 class App extends React.Component<{}, {}> {
