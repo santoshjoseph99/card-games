@@ -18,7 +18,7 @@ interface ICardsWithCountProps {
 const CardsWithCount: React.FC<ICardsWithCountProps> = (props: ICardsWithCountProps) => {
   const { card1, card2, count } = props;
   return (
-    <Stack horizontal>
+    <Stack horizontal verticalAlign='center'>
       <CardImage card={card1} size={CardSize.small} />
       {card2 && <CardImage card={card2} size={CardSize.small} />}
       <span>{count}</span>

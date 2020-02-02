@@ -5,6 +5,7 @@ import Count from './Count';
 import { BlackjackCounter, Card, Hand } from 'blackjack-counting';
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import Cards from './Cards';
+import { StyleSheet, css } from 'aphrodite';
 
 interface Player {
   cards: Card[];
@@ -216,11 +217,28 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
           cards={this.state.dealer.cards}
           score={this.state.dealer.score} />
         <Count count={this.blackjackCounter.count} />
-        <div>{this.state.handEnded && <span>Result: {this.getWinner()}</span>}</div>
+        <div className={css(styles.winnerContainer)}>
+          {this.state.handEnded &&
+            <span className={css(styles.winner)}>
+              Result: {this.getWinner()}
+            </span>}
+        </div>
         <Cards cards={this.state.cards} getCount={this.blackjackCounter.getCount} />
       </div>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  winnerContainer: {
+    padding: 10,
+    margin: 10
+  },
+  winner: {
+    border: 'blue 1px solid',
+    padding: 10,
+    margin: 10
+  },
+});
 
 export default BlackjackCounterUX;
