@@ -9,6 +9,8 @@ export {
   Suit
 }
 
+const wait = (ms: number) => new Promise((r, j) => setTimeout(r, ms));
+
 export default class BlackjackCounter {
   private deck: BlackjackDeck;
   private cb: CardCallback;
@@ -38,26 +40,32 @@ export default class BlackjackCounter {
     this.startHand();
   }
 
-  public startHand(): void {
+  public async startHand(): Promise<void> {
     const d1 = this.deck.getCard();
     const d2 = this.deck.getCard();
     const p1 = this.deck.getCard();
     const p2 = this.deck.getCard();
     this.cb(1, p1);
+    await wait(200);
     this.countNum += this.getCount(p1);
     this.cb(0, d1);
+    await wait(200);
     this.countNum += this.getCount(d1);
     this.cb(1, p2);
+    await wait(200);
     this.countNum += this.getCount(p2);
     this.cb(0, d2);
+    await wait(200);
+    this.countNum += this.getCount(d2);
   }
 
   public endGame(): void {
   }
 
-  public getCard(): Card {
+  public async getCard(): Promise<Card> {
     const c = this.deck.getCard();
     this.countNum += this.getCount(c);
+    await wait(200);
     return c;
   }
 
@@ -83,7 +91,7 @@ export default class BlackjackCounter {
     return min(scores.filter(x => x > 21)) || 0;
   }
 
-  private getCount(card: Card): number {
+  public getCount(card: Card): number {
     if (card.rank === Rank.Ace ||
       card.rank === Rank.Ten ||
       card.rank === Rank.Jack ||
@@ -94,7 +102,8 @@ export default class BlackjackCounter {
       card.rank === Rank.Three ||
       card.rank === Rank.Four ||
       card.rank === Rank.Five ||
-      card.rank === Rank.Six) {
+      card.rank === Rank.Six ||
+      card.rank === Rank.Seven) {
       return 1;
     } else {
       return 0;

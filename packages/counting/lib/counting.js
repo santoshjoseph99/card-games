@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -9,6 +18,7 @@ exports.Rank = deckjs_1.Rank;
 exports.Suit = deckjs_1.Suit;
 const hand_1 = __importDefault(require("./hand"));
 const lodash_1 = require("lodash");
+const wait = (ms) => new Promise((r, j) => setTimeout(r, ms));
 class BlackjackCounter {
     constructor(cb, numOfDecks = 6, numOfPlayers = 1) {
         // TODO: strategyType
@@ -29,24 +39,34 @@ class BlackjackCounter {
         this.startHand();
     }
     startHand() {
-        const d1 = this.deck.getCard();
-        const d2 = this.deck.getCard();
-        const p1 = this.deck.getCard();
-        const p2 = this.deck.getCard();
-        this.cb(1, p1);
-        this.countNum += this.getCount(p1);
-        this.cb(0, d1);
-        this.countNum += this.getCount(d1);
-        this.cb(1, p2);
-        this.countNum += this.getCount(p2);
-        this.cb(0, d2);
+        return __awaiter(this, void 0, void 0, function* () {
+            const d1 = this.deck.getCard();
+            const d2 = this.deck.getCard();
+            const p1 = this.deck.getCard();
+            const p2 = this.deck.getCard();
+            this.cb(1, p1);
+            yield wait(200);
+            this.countNum += this.getCount(p1);
+            this.cb(0, d1);
+            yield wait(200);
+            this.countNum += this.getCount(d1);
+            this.cb(1, p2);
+            yield wait(200);
+            this.countNum += this.getCount(p2);
+            this.cb(0, d2);
+            yield wait(200);
+            this.countNum += this.getCount(d2);
+        });
     }
     endGame() {
     }
     getCard() {
-        const c = this.deck.getCard();
-        this.countNum += this.getCount(c);
-        return c;
+        return __awaiter(this, void 0, void 0, function* () {
+            const c = this.deck.getCard();
+            this.countNum += this.getCount(c);
+            yield wait(200);
+            return c;
+        });
     }
     getCountFromCards(cards) {
         return cards.map(this.getCount).reduce((a, b) => a + b, 0);
@@ -77,7 +97,8 @@ class BlackjackCounter {
             card.rank === deckjs_1.Rank.Three ||
             card.rank === deckjs_1.Rank.Four ||
             card.rank === deckjs_1.Rank.Five ||
-            card.rank === deckjs_1.Rank.Six) {
+            card.rank === deckjs_1.Rank.Six ||
+            card.rank === deckjs_1.Rank.Seven) {
             return 1;
         }
         else {
