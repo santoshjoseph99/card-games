@@ -20,11 +20,10 @@ const hand_1 = __importDefault(require("./hand"));
 const lodash_1 = require("lodash");
 const wait = (ms) => new Promise((r, j) => setTimeout(r, ms));
 class BlackjackCounter {
-    constructor(cb, numOfDecks = 6, numOfPlayers = 1) {
+    constructor(numOfDecks = 6, numOfPlayers = 1) {
         // TODO: strategyType
         this.numOfDecks = numOfDecks;
         this.numOfPlayers = numOfPlayers;
-        this.cb = cb;
         this.deck = new deckjs_1.BlackjackDeck(numOfDecks);
         this.countNum = 0;
     }
@@ -36,24 +35,23 @@ class BlackjackCounter {
     }
     startGame() {
         this.countNum = 0;
-        this.startHand();
     }
-    startHand() {
+    startHand(cb) {
         return __awaiter(this, void 0, void 0, function* () {
             const d1 = this.deck.getCard();
             const d2 = this.deck.getCard();
             const p1 = this.deck.getCard();
             const p2 = this.deck.getCard();
-            this.cb(1, p1);
+            cb(1, p1);
             yield wait(200);
             this.countNum += this.getCount(p1);
-            this.cb(0, d1);
+            cb(0, d1);
             yield wait(200);
             this.countNum += this.getCount(d1);
-            this.cb(1, p2);
+            cb(1, p2);
             yield wait(200);
             this.countNum += this.getCount(p2);
-            this.cb(0, d2);
+            cb(0, d2);
             yield wait(200);
             this.countNum += this.getCount(d2);
         });

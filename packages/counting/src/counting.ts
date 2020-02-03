@@ -13,16 +13,14 @@ const wait = (ms: number) => new Promise((r, j) => setTimeout(r, ms));
 
 export default class BlackjackCounter {
   private deck: BlackjackDeck;
-  private cb: CardCallback;
   private numOfDecks: number;
   private numOfPlayers: number;
   private countNum: number;
 
-  constructor(cb: CardCallback, numOfDecks: number = 6, numOfPlayers: number = 1) {
+  constructor(numOfDecks: number = 6, numOfPlayers: number = 1) {
     // TODO: strategyType
     this.numOfDecks = numOfDecks;
     this.numOfPlayers = numOfPlayers;
-    this.cb = cb;
     this.deck = new BlackjackDeck(numOfDecks);
     this.countNum = 0;
   }
@@ -37,24 +35,23 @@ export default class BlackjackCounter {
 
   public startGame(): void {
     this.countNum = 0;
-    this.startHand();
   }
 
-  public async startHand(): Promise<void> {
+  public async startHand(cb: CardCallback): Promise<void> {
     const d1 = this.deck.getCard();
     const d2 = this.deck.getCard();
     const p1 = this.deck.getCard();
     const p2 = this.deck.getCard();
-    this.cb(1, p1);
+    cb(1, p1);
     await wait(200);
     this.countNum += this.getCount(p1);
-    this.cb(0, d1);
+    cb(0, d1);
     await wait(200);
     this.countNum += this.getCount(d1);
-    this.cb(1, p2);
+    cb(1, p2);
     await wait(200);
     this.countNum += this.getCount(p2);
-    this.cb(0, d2);
+    cb(0, d2);
     await wait(200);
     this.countNum += this.getCount(d2);
   }
