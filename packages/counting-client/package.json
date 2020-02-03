@@ -1,6 +1,6 @@
 {
   "name": "counting-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.21",
@@ -8,7 +8,7 @@
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
     "aphrodite": "^2.4.0",
-    "blackjack-counting": "^3.0.0",
+    "blackjack-counting": "^3.0.1",
     "office-ui-fabric-react": "^7.88.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
