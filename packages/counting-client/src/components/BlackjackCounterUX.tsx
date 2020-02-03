@@ -35,7 +35,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
   constructor(props: any) {
     super(props);
     this.handEnded = false;
-    this.blackjackCounter = new BlackjackCounter(this.cardCallback.bind(this));
+    this.blackjackCounter = new BlackjackCounter();
     this.player = {
       cards: [],
       score: 0,
@@ -156,6 +156,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
   newGame() {
     this.blackjackCounter.shuffle();
     this.blackjackCounter.startGame();
+    this.blackjackCounter.startHand(this.cardCallback.bind(this));
   }
 
   componentDidMount() {
@@ -178,7 +179,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       dealer: this.dealer,
       handEnded: false,
     });
-    await this.blackjackCounter.startHand();
+    await this.blackjackCounter.startHand(this.cardCallback.bind(this));
   }
 
   getWinner() {
@@ -216,13 +217,13 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
         <Dealer
           cards={this.state.dealer.cards}
           score={this.state.dealer.score} />
-        <Count count={this.blackjackCounter.count} />
         <div className={css(styles.winnerContainer)}>
           {this.state.handEnded &&
             <span className={css(styles.winner)}>
               Result: {this.getWinner()}
             </span>}
         </div>
+        <Count count={this.blackjackCounter.count} />
         <Cards cards={this.state.cards} getCount={this.blackjackCounter.getCount} />
       </div>
     );
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
     margin: 10
   },
   winner: {
-    border: 'blue 1px solid',
+    border: 'yellow 1px solid',
     padding: 10,
     margin: 10
   },
