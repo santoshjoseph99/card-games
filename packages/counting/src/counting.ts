@@ -22,7 +22,7 @@ export default class BlackjackCounter {
     this.numOfDecks = numOfDecks;
     this.numOfPlayers = numOfPlayers;
     this.deck = new BlackjackDeck(numOfDecks);
-    this.countNum = 0;
+    this.countNum =  (-1 * numOfDecks * 4) + 4;
   }
 
   get count() {
@@ -34,7 +34,7 @@ export default class BlackjackCounter {
   }
 
   public startGame(): void {
-    this.countNum = 0;
+    this.countNum =  (-1 * this.numOfDecks * 4) + 4;
   }
 
   public async startHand(cb: CardCallback): Promise<void> {

@@ -25,7 +25,7 @@ class BlackjackCounter {
         this.numOfDecks = numOfDecks;
         this.numOfPlayers = numOfPlayers;
         this.deck = new deckjs_1.BlackjackDeck(numOfDecks);
-        this.countNum = 0;
+        this.countNum = (-1 * numOfDecks * 4) + 4;
     }
     get count() {
         return this.countNum;
@@ -34,7 +34,7 @@ class BlackjackCounter {
         this.deck.shuffle();
     }
     startGame() {
-        this.countNum = 0;
+        this.countNum = (-1 * this.numOfDecks * 4) + 4;
     }
     startHand(cb) {
         return __awaiter(this, void 0, void 0, function* () {
