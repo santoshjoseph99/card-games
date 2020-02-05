@@ -20,6 +20,9 @@ a. TESTING
 c. CSS transitions (show deck)...then animate cards from deck to hand and also flipping dealer card
 d. check for end of cards
 e. show number of wins/losses/push
+f. put images on a CDN
+g. add preact and compare profile
+i. add mobx or unistore for state management
 */
 
 class App extends React.Component<{}, {}> {
