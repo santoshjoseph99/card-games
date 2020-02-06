@@ -17,7 +17,7 @@ const Dealer: React.FC<IDealerProps> = (props: IDealerProps) => {
   return (
     <div className={css(styles.dealerContainer)}>
       <Label>{`Dealer ${scoreStr}`}</Label>
-      <CardsContainer list={cards} size={CardSize.small} />
+      <CardsContainer list={cards} size={CardSize.medium} />
     </div>
   );
 }

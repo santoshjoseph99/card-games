@@ -18,11 +18,19 @@ interface Dealer {
   score: number;
 }
 
+interface Score {
+  playerWin: number;
+  dealerWin: number;
+  push: number;
+  message: string;
+}
+
 interface IAppState {
   handEnded: boolean,
   player: Player;
   dealer: Dealer;
   cards: Card[];
+  score: Score;
 }
 
 class BlackjackCounterUX extends React.Component<{}, IAppState> {
@@ -31,6 +39,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
   private player: Player;
   private dealer: Dealer;
   private cards: Card[];
+  private score: Score;
 
   constructor(props: any) {
     super(props);
@@ -46,11 +55,18 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       score: 0,
     };
     this.cards = [];
+    this.score = {
+      playerWin: 0,
+      dealerWin: 0,
+      push: 0,
+      message: '',
+    };
     this.state = {
       handEnded: this.handEnded,
       player: this.player,
       dealer: this.dealer,
       cards: [],
+      score: this.score,
     }
   }
 
@@ -119,8 +135,10 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
         cards: this.cards,
       });
       if (this.player.score > 21 || Hand.isNatural(this.player.cards)) {
+        this.setHandResult();
         this.setState({
-          handEnded: true
+          handEnded: true,
+          score: this.score,
         });
         return;
       }
@@ -147,8 +165,10 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       } else {
         //bust
       }
+      this.setHandResult();
       this.setState({
-        handEnded: true
+        handEnded: true,
+        score: this.score,
       });
     }
   }
@@ -156,6 +176,12 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
   newGame() {
     this.blackjackCounter.shuffle();
     this.blackjackCounter.startGame();
+    this.score = {
+      playerWin: 0,
+      dealerWin: 0,
+      push: 0,
+      message: '',
+    };
     this.blackjackCounter.startHand(this.cardCallback.bind(this));
   }
 
@@ -178,28 +204,37 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       player: this.player,
       dealer: this.dealer,
       handEnded: false,
+      score: this.score,
     });
     await this.blackjackCounter.startHand(this.cardCallback.bind(this));
   }
 
-  getWinner() {
+  setHandResult() {
     const dealerScores = this.blackjackCounter.getBlackjackScore(this.dealer.cards);
     const dealerScore = this.blackjackCounter.getHighestNonBustScore(dealerScores);
     const playerScores = this.blackjackCounter.getBlackjackScore(this.player.cards);
     const playerScore = this.blackjackCounter.getHighestNonBustScore(playerScores);
+
     if (playerScore === 0) {
-      return 'Dealer wins, Player busts';
-    }
-    if (dealerScore === 0) {
-      return 'Player wins, Dealer busts';
-    }
-    if (playerScore === dealerScore) {
-      return 'Push!';
+      this.score.message = 'Dealer wins, Player busts';
+      this.score.dealerWin += 1;
+    } else if (dealerScore === 0) {
+      this.score.message = 'Player wins, Dealer busts';
+      this.score.playerWin += 1;
+    } else if (playerScore === dealerScore) {
+      this.score.message = 'Push!';
+      this.score.push += 1;
     } else if (playerScore > dealerScore) {
-      return 'Player Wins';
+      this.score.message = 'Player Wins';
+      this.score.playerWin += 1;
     } else if (playerScore < dealerScore) {
-      return 'Dealer Wins';
+      this.score.message = 'Dealer Wins';
+      this.score.dealerWin += 1;
     }
+  }
+
+  getHandResult() {
+    return `${this.state.score.message}: Player ${this.state.score.playerWin} Dealer ${this.state.score.dealerWin} Push ${this.state.score.push}`;
   }
 
   render() {
@@ -220,7 +255,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
         <div className={css(styles.winnerContainer)}>
           {this.state.handEnded &&
             <span className={css(styles.winner)}>
-              Result: {this.getWinner()}
+              Result: {this.getHandResult()}
             </span>}
         </div>
         <Count count={this.blackjackCounter.count} />

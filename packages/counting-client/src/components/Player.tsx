@@ -26,7 +26,7 @@ const Player: React.FC<IPlayerProps> = (props: IPlayerProps) => {
         <DefaultButton onClick={getCard} disabled={disableHit}>Hit</DefaultButton>
         <DefaultButton onClick={stand}>Stand</DefaultButton>
       </div>
-      <CardsContainer list={cards} size={CardSize.small} />
+      <CardsContainer list={cards} size={CardSize.medium} />
     </div>
   );
 }

@@ -18,6 +18,8 @@ const CardImage: React.FC<ICardProps> = (props: ICardProps) => {
   let cardTypeClass;
   if (size === CardSize.small) {
     cardTypeClass = css(styles.cardSmall);
+  } else if (size === CardSize.medium) {
+    cardTypeClass = css(styles.cardMedium);
   }
   const src = card.faceUp ?
     `/images/PNG/${card.toShortString()}.png` :
@@ -36,4 +38,9 @@ const styles = StyleSheet.create({
     width: 60,
     margin: 5,
   },
+  cardMedium: {
+    height: 160,
+    width: 120,
+    margin: 5,
+  }
 });
