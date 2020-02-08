@@ -4,6 +4,29 @@ import sortBy from 'lodash/sortBy';
 import { Card, Rank } from 'deckjs';
 
 export default class Hand {
+
+  public static canSplit(cards:Card[]) {
+    if(cards.length !== 2) {
+      return false;
+    }
+    return cards[0].rank === cards[1].rank;
+  }
+
+  public static canDoubleDown(cards:Card[]) {
+    if(cards.length !== 2) {
+      return false;
+    }
+    return Hand.getHandValue(cards) === 11;
+  }
+
+  public static canSurrender() {
+    return false;
+  }
+
+  public static insuranceAvailable(cards:Card[]) {
+    return cards[0].rank === Rank.Ace;
+  }
+
   public static isSoft (cards:Card[]) {
     return cards.length === 2 && Hand.hasAce(cards);
   }

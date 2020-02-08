@@ -1,5 +1,9 @@
 import { Card } from 'deckjs';
 export default class Hand {
+    static canSplit(cards: Card[]): boolean;
+    static canDoubleDown(cards: Card[]): boolean;
+    static canSurrender(): boolean;
+    static insuranceAvailable(cards: Card[]): boolean;
     static isSoft(cards: Card[]): boolean;
     static isHard(cards: Card[]): boolean;
     static hasAce(cards: Card[]): boolean;

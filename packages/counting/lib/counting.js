@@ -105,15 +105,4 @@ class BlackjackCounter {
     }
 }
 exports.default = BlackjackCounter;
-/*
- UI code will call create the class with the number of decks, strategyForCounting, players#, timeout, showcount
-   then will call start() with call backs
-   callback -> player#, cards
-   getCard() will return a card (when player hits)
-   +, - for keeping count or -2, -1, 0, +1, +2 for buttons and have a highlight over each card
-   OR
-   +, - buttons and then prompt the player for action and then +/-. then dealer happens every 1 second
-
-
-*/ 
 //# sourceMappingURL=counting.js.map

@@ -8,6 +8,24 @@ const uniq_1 = __importDefault(require("lodash/uniq"));
 const sortBy_1 = __importDefault(require("lodash/sortBy"));
 const deckjs_1 = require("deckjs");
 class Hand {
+    static canSplit(cards) {
+        if (cards.length !== 2) {
+            return false;
+        }
+        return cards[0].rank === cards[1].rank;
+    }
+    static canDoubleDown(cards) {
+        if (cards.length !== 2) {
+            return false;
+        }
+        return Hand.getHandValue(cards) === 11;
+    }
+    static canSurrender() {
+        return false;
+    }
+    static insuranceAvailable(cards) {
+        return cards[0].rank === deckjs_1.Rank.Ace;
+    }
     static isSoft(cards) {
         return cards.length === 2 && Hand.hasAce(cards);
     }
