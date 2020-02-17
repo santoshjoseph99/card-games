@@ -1,6 +1,9 @@
 import { BlackjackDeck, Card, Rank, Suit } from 'deckjs';
 import Hand from './hand';
 import { max, min } from 'lodash';
+import ICountingSystem, { ICountingSystems } from './system/counting/ICountingSystem';
+import LowHighCounting from './system/counting/low-high';
+import KnockoutCounting from './system/counting/knockout';
 
 export type CardCallback = (player: number, card: Card) => void;
 export {
@@ -16,13 +19,19 @@ export default class BlackjackCounter {
   private numOfDecks: number;
   private numOfPlayers: number;
   private countNum: number;
+  private countingSystem: ICountingSystem;
 
-  constructor(numOfDecks: number = 6, numOfPlayers: number = 1) {
+  constructor(countingSystem:ICountingSystems = ICountingSystems.LowHigh, numOfDecks: number = 6, numOfPlayers: number = 1) {
     // TODO: strategyType
     this.numOfDecks = numOfDecks;
     this.numOfPlayers = numOfPlayers;
     this.deck = new BlackjackDeck(numOfDecks);
     this.countNum =  (-1 * numOfDecks * 4) + 4;
+    if(countingSystem === ICountingSystems.LowHigh) {
+      this.countingSystem = new LowHighCounting();
+    } else if(countingSystem === ICountingSystems.KnockOut) {
+      this.countingSystem = new KnockoutCounting();
+    }
   }
 
   get count() {
@@ -89,21 +98,6 @@ export default class BlackjackCounter {
   }
 
   public getCount(card: Card): number {
-    if (card.rank === Rank.Ace ||
-      card.rank === Rank.Ten ||
-      card.rank === Rank.Jack ||
-      card.rank === Rank.Queen ||
-      card.rank === Rank.King) {
-      return -1;
-    } else if (card.rank === Rank.Two ||
-      card.rank === Rank.Three ||
-      card.rank === Rank.Four ||
-      card.rank === Rank.Five ||
-      card.rank === Rank.Six ||
-      card.rank === Rank.Seven) {
-      return 1;
-    } else {
-      return 0;
-    }
+    return this.countingSystem.getCount(card);
   }
 }

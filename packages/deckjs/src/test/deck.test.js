@@ -1,7 +1,6 @@
 var chai = require('chai');
 var expect = require('chai').expect;
-var {Deck, Rank, Suit} = require('../../lib/index');
-
+var {Deck, Card, Rank, Suit} = require('../../lib/index');
 
 function hasNumCardsOfSuit(cards, suit, num) {
   let count = 0;
@@ -95,5 +94,71 @@ describe('Deck', function() {
       let deck = new Deck(1);
       deck.shuffle();
     });
+  });
+  describe('.swapCardAt', () => {
+    context('1 deck', () => {
+      it('swaps card at end', () => {
+        const SUT = new Deck(1);
+        SUT.swapCardAt(Rank.Ace, Suit.Diamond, 51);
+        const card = SUT.getCard();
+        expect(card.toShortString()).to.be.equal('ad');
+      });
+      it('throws an exception for out of range', () => {
+        const SUT = new Deck(1);
+        expect(() => SUT.swapCardAt(Rank.Ace, Suit.Diamond, 52))
+          .to.throw('out of range');
+      });
+      it('throws if card does not exist', () => {
+        const SUT = new Deck(1);
+        expect(() => SUT.swapCardAt(Rank.Joker, Suit.Diamond, 51))
+          .to.throw('Could not find card');
+      });
+    });
+    context('multiple decks', () => {
+      it('swaps card at end', () => {
+        const SUT = new Deck(6);
+        SUT.swapCardAt(Rank.Ace, Suit.Diamond, 6*52-1);
+        const card = SUT.getCard();
+        expect(card.toShortString()).to.be.equal('ad');
+      });
+    });
+  });
+  describe('.setCards', () => {
+    context('1 deck', () => {
+      it('adds kings at the end', () => {
+        const SUT = new Deck(1);
+        SUT.setCards([
+          new Card(Rank.King, Suit.Club),
+          new Card(Rank.King, Suit.Diamond),
+          new Card(Rank.King, Suit.Heart),
+          new Card(Rank.King, Suit.Spade)
+        ]);
+        const card1 = SUT.getCard();
+        expect(card1.toShortString()).to.be.equal('kc');
+        const card2 = SUT.getCard();
+        expect(card2.toShortString()).to.be.equal('kd');
+        const card3 = SUT.getCard();
+        expect(card3.toShortString()).to.be.equal('kh');
+        const card4 = SUT.getCard();
+        expect(card4.toShortString()).to.be.equal('ks');
+      });
+    });
+    context('multiple decks', () => {
+        const SUT = new Deck(6);
+        SUT.setCards([
+          new Card(Rank.King, Suit.Club),
+          new Card(Rank.King, Suit.Diamond),
+          new Card(Rank.King, Suit.Heart),
+          new Card(Rank.King, Suit.Spade)
+        ]);
+        const card1 = SUT.getCard();
+        expect(card1.toShortString()).to.be.equal('kc');
+        const card2 = SUT.getCard();
+        expect(card2.toShortString()).to.be.equal('kd');
+        const card3 = SUT.getCard();
+        expect(card3.toShortString()).to.be.equal('kh');
+        const card4 = SUT.getCard();
+        expect(card4.toShortString()).to.be.equal('ks');
+    })
   });
 });

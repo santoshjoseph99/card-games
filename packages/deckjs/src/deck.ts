@@ -2,6 +2,7 @@ import shuffle from 'lodash/shuffle';
 import Card from './card';
 import { Rank } from './rank';
 import { Suit } from './suit';
+import cloneDeep from 'lodash/cloneDeep';
 
 export default class Deck {
   private cards: Card[];
@@ -36,7 +37,33 @@ export default class Deck {
     return this.cards.pop();
   }
 
+  public peek() : Card {
+    return this.cards[this.cards.length - 1];
+  }
+
   public shuffle(): void {
     this.cards = shuffle(this.cards);
+  }
+
+  public swapCardAt(rank:Rank, suit:Suit, index:number) {
+    if(index >= this.cards.length) {
+      throw new Error('out of range');
+    }
+    const foundIndex = this.cards.findIndex(x => x.rank === rank && x.suit === suit);
+    if(foundIndex === -1) {
+      throw new Error('Could not find card');
+    }
+    const swapCard = cloneDeep(this.cards[index]);
+    const foundCard = cloneDeep(this.cards[foundIndex]);
+    this.cards[index] = foundCard;
+    this.cards[foundIndex] = swapCard;
+  }
+
+  public setCards(list:Card[]) {
+    let length = this.cards.length - 1;
+    for(const c of list) {
+      this.swapCardAt(c.rank, c.suit, length);
+      length -= 1;
+    }
   }
 };

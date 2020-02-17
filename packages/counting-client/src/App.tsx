@@ -3,24 +3,24 @@ import './App.css';
 import BlackjackCounterUX from './components/BlackjackCounterUX';
 
 /*
-1. pick counting system
-2. blackjack play. 
+* blackjack play. 
       split hands
       double down
       surrender
       insurance
       change stand button to "something else" when player busts or natural
-4. user login (save scores)
-5. automatic next hand option
-6. side count systems support
-7. deck options (number, card visual types)
-9. refactor into better components (lerna.js for package management).
-  * separate logic and UX from the blackjackCounterUX class
-a. TESTING
-c. CSS transitions (show deck)...then animate cards from deck to hand and also flipping dealer card
-d. check for end of cards
-f. put images on a CDN
-i. add mobx or unistore for state management
+* user login (save scores)
+* automatic next hand option
+* side count systems support
+* deck options (number, card visual types)
+* separate logic and UX from the blackjackCounterUX class
+* blackjack game class
+  this should return available actions to player (logic should live)
+* TESTING
+* CSS transitions (show deck)...then animate cards from deck to hand and also flipping dealer card
+* check for end of cards
+* try new links for CDN
+* add mobx or unistore for state management
 */
 
 class App extends React.Component<{}, {}> {

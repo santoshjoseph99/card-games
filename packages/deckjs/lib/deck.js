@@ -7,6 +7,7 @@ const shuffle_1 = __importDefault(require("lodash/shuffle"));
 const card_1 = __importDefault(require("./card"));
 const rank_1 = require("./rank");
 const suit_1 = require("./suit");
+const cloneDeep_1 = __importDefault(require("lodash/cloneDeep"));
 class Deck {
     constructor(numOfDecks = 1, jokersPerDeck = 0) {
         this.cards = [];
@@ -36,8 +37,31 @@ class Deck {
     getCard() {
         return this.cards.pop();
     }
+    peek() {
+        return this.cards[this.cards.length - 1];
+    }
     shuffle() {
         this.cards = shuffle_1.default(this.cards);
+    }
+    swapCardAt(rank, suit, index) {
+        if (index >= this.cards.length) {
+            throw new Error('out of range');
+        }
+        const foundIndex = this.cards.findIndex(x => x.rank === rank && x.suit === suit);
+        if (foundIndex === -1) {
+            throw new Error('Could not find card');
+        }
+        const swapCard = cloneDeep_1.default(this.cards[index]);
+        const foundCard = cloneDeep_1.default(this.cards[foundIndex]);
+        this.cards[index] = foundCard;
+        this.cards[foundIndex] = swapCard;
+    }
+    setCards(list) {
+        let length = this.cards.length - 1;
+        for (const c of list) {
+            this.swapCardAt(c.rank, c.suit, length);
+            length -= 1;
+        }
     }
 }
 exports.default = Deck;
