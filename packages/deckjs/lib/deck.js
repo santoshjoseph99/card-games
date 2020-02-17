@@ -11,6 +11,7 @@ const cloneDeep_1 = __importDefault(require("lodash/cloneDeep"));
 class Deck {
     constructor(numOfDecks = 1, jokersPerDeck = 0) {
         this.cards = [];
+        this.discards = [];
         this.init(numOfDecks, jokersPerDeck);
     }
     init(numOfDecks, jokersPerDeck) {
@@ -33,9 +34,17 @@ class Deck {
             const c = new card_1.default(rank_1.Rank.Joker, suit_1.Suit.Joker);
             this.cards.push(c);
         }
+        this.discards = [];
     }
     getCard() {
-        return this.cards.pop();
+        const c = this.cards.pop();
+        if (c) {
+            this.discards.push(c);
+        }
+        return c;
+    }
+    getDiscards() {
+        return this.discards;
     }
     peek() {
         return this.cards[this.cards.length - 1];

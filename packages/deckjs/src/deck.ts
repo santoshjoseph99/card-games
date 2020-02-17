@@ -6,8 +6,11 @@ import cloneDeep from 'lodash/cloneDeep';
 
 export default class Deck {
   private cards: Card[];
+  private discards: Card[];
+
   constructor(numOfDecks: number = 1, jokersPerDeck: number = 0) {
     this.cards = [];
+    this.discards = [];
     this.init(numOfDecks, jokersPerDeck);
   }
 
@@ -31,10 +34,19 @@ export default class Deck {
       const c = new Card(Rank.Joker, Suit.Joker);
       this.cards.push(c);
     }
+    this.discards = [];
   }
 
   public getCard(): Card | undefined {
-    return this.cards.pop();
+    const c = this.cards.pop();
+    if(c) {
+      this.discards.push(c);
+    }
+    return c;
+  }
+
+  public getDiscards(): Card[] {
+    return this.discards;
   }
 
   public peek() : Card {

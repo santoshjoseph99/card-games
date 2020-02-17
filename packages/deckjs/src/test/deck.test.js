@@ -22,6 +22,16 @@ function hasNumOfJokers(cards, num) {
   return num === count;
 }
 
+function hasNumOfCard(cards, card, num) {
+  let count = 0;
+  cards.forEach(c => {
+    if(c.rank === card.rank && c.suit === card.suit) {
+      count += 1;
+    }
+  });
+  return num === count;
+}
+
 describe('Deck', function() {
   context('one deck no jokers', function(){
     it('has 52 cards', function(){
@@ -100,8 +110,9 @@ describe('Deck', function() {
       it('swaps card at end', () => {
         const SUT = new Deck(1);
         SUT.swapCardAt(Rank.Ace, Suit.Diamond, 51);
-        const card = SUT.getCard();
+        const card = SUT.peek();
         expect(card.toShortString()).to.be.equal('ad');
+        expect(hasNumOfCard(SUT.cards, new Card(Rank.Ace, Suit.Diamond), 1)).to.be.true;
       });
       it('throws an exception for out of range', () => {
         const SUT = new Deck(1);
@@ -118,8 +129,9 @@ describe('Deck', function() {
       it('swaps card at end', () => {
         const SUT = new Deck(6);
         SUT.swapCardAt(Rank.Ace, Suit.Diamond, 6*52-1);
-        const card = SUT.getCard();
+        const card = SUT.peek();
         expect(card.toShortString()).to.be.equal('ad');
+        expect(hasNumOfCard(SUT.cards, new Card(Rank.Ace, Suit.Diamond), 6)).to.be.true;
       });
     });
   });
@@ -161,4 +173,16 @@ describe('Deck', function() {
         expect(card4.toShortString()).to.be.equal('ks');
     })
   });
+  describe('.getDiscards', () => {
+    it('discards are empty after init', () => {
+      const SUT = new Deck(1);
+      expect(SUT.getDiscards()).to.have.length(0);
+    });
+    it('discards has list of cards', () => {
+      const SUT = new Deck(1);
+      const c1 = SUT.getCard();
+      const c2 = SUT.getCard();
+      expect(SUT.getDiscards()).to.have.length(2);
+    })
+  })
 });
