@@ -1,7 +1,20 @@
 import React from 'react';
 import './App.css';
 import BlackjackCounterUX from './components/BlackjackCounterUX';
+import { Provider } from 'unistore/react';
+import store from './store/store';
 
+class App extends React.Component<{}, {}> {
+  render() {
+    return (
+    <Provider store={store}>
+      <BlackjackCounterUX />
+    </Provider>
+    );
+  }
+}
+
+export default App;
 /*
 * blackjack play. 
       split hands
@@ -22,11 +35,3 @@ import BlackjackCounterUX from './components/BlackjackCounterUX';
 * try new links for CDN
 * add mobx or unistore for state management
 */
-
-class App extends React.Component<{}, {}> {
-  render() {
-    return <BlackjackCounterUX />;
-  }
-}
-
-export default App;

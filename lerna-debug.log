@@ -1,23 +1,15 @@
 0 silly argv {
-0 silly argv   _: [ 'import' ],
+0 silly argv   _: [ 'add' ],
+0 silly argv   scope: 'counting-client',
+0 silly argv   dev: true,
+0 silly argv   D: true,
+0 silly argv   globs: [],
 0 silly argv   lernaVersion: '3.20.2',
 0 silly argv   '$0': 'lerna',
-0 silly argv   dir: '/Users/sjoseph/code/cards/deckjs'
+0 silly argv   pkg: '@types/unistore'
 0 silly argv }
 1 notice cli v3.20.2
 2 verbose rootPath /Users/sjoseph/code/cards/card-games
 3 info versioning independent
-4 error Error: Command failed: git rev-parse HEAD
-4 error fatal: ambiguous argument 'HEAD': unknown revision or path not in the working tree.
-4 error Use '--' to separate paths from revisions, like this:
-4 error 'git <command> [<revision>...] -- [<file>...]'
-4 error
-4 error HEAD
-4 error
-4 error     at makeError (/Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/execa/index.js:174:9)
-4 error     at Function.module.exports.sync (/Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/execa/index.js:338:15)
-4 error     at Object.execSync (/Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/@lerna/child-process/index.js:26:16)
-4 error     at ImportCommand.execSync (/Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/@lerna/import/index.js:143:34)
-4 error     at ImportCommand.getCurrentSHA (/Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/@lerna/import/index.js:135:17)
-4 error     at ImportCommand.initialize (/Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/@lerna/import/index.js:104:31)
-4 error     at /Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/@lerna/command/index.js:272:24
+4 error Error: 404 Not Found - GET https://registry.npmjs.org/@types%2funistore - Not found
+4 error     at /Users/sjoseph/.nvm/versions/node/v12.4.0/lib/node_modules/lerna/node_modules/@evocateur/npm-registry-fetch/check-response.js:104:15

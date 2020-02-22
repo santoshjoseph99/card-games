@@ -6,41 +6,30 @@ import { BlackjackCounter, Card, Hand } from 'blackjack-counting';
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import Cards from './Cards';
 import { StyleSheet, css } from 'aphrodite';
-
-interface Player {
-  cards: Card[];
-  score: number;
-  disableHit: boolean;
-}
-
-interface Dealer {
-  cards: Card[];
-  score: number;
-}
-
-interface Score {
-  playerWin: number;
-  dealerWin: number;
-  push: number;
-  message: string;
-}
+import { connect } from 'unistore/react';
+import IPlayer from './IPlayer';
+import IDealer from './IDealer';
+import IScore from './IScore';
+import actions, { IActions } from '../store/actions';
+import { IStoreState } from '../store/store';
 
 interface IAppState {
   handEnded: boolean,
-  player: Player;
-  dealer: Dealer;
+  player: IPlayer;
+  dealer: IDealer;
   cards: Card[];
-  score: Score;
+  score: IScore;
   disableStand: boolean;
 }
 
-class BlackjackCounterUX extends React.Component<{}, IAppState> {
+const BlackjackCounterUX = connect(['test', 'handEnded'], actions)(
+class BlackjackCounterUX extends React.Component<IStoreState & IActions, IAppState> {
   private blackjackCounter: BlackjackCounter;
   private handEnded: boolean;
-  private player: Player;
-  private dealer: Dealer;
+  private player: IPlayer;
+  private dealer: IDealer;
   private cards: Card[];
-  private score: Score;
+  private score: IScore;
   private disableStand: boolean;
 
   constructor(props: any) {
@@ -246,10 +235,13 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
   }
 
   render() {
+    console.log('D1:', this.props.test, this.props.handEnded, this.props.endHand);
+    // this.props
     return (
       <div>
         <div>
           <PrimaryButton onClick={this.newHand}>New Hand</PrimaryButton>
+          <PrimaryButton onClick={this.props.endHand}>End Hand Test</PrimaryButton>
         </div>
         <Player
           name={'me'}
@@ -273,7 +265,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       </div>
     );
   }
-}
+});
 
 const styles = StyleSheet.create({
   winnerContainer: {
