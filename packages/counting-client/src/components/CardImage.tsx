@@ -13,6 +13,9 @@ export interface ICardProps {
   card: Card;
 }
 
+// const URL = '/images/PNG';
+const URL = 'https://sjcards.s3-us-west-1.amazonaws.com';
+
 const CardImage: React.FC<ICardProps> = (props: ICardProps) => {
   const { card, size } = props;
   let cardTypeClass;
@@ -22,8 +25,8 @@ const CardImage: React.FC<ICardProps> = (props: ICardProps) => {
     cardTypeClass = css(styles.cardMedium);
   }
   const src = card.faceUp ?
-    `/images/PNG/${card.toShortString()}.png` :
-    '/images/PNG/yellow_back.png';
+    `${URL}/${card.toShortString().toUpperCase()}.png` :
+    `${URL}/yellow_back.png`;
 
   return (
     <img className={cardTypeClass} src={src} alt={"TODO"} />

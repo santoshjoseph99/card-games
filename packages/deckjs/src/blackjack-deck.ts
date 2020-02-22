@@ -29,7 +29,7 @@ export default class BlackjackDeck extends Deck {
     this.index += 1;
     let c = super.getCard();
     if(!c) {
-      this.shuffle(); // TODO: this is wrong
+      this.shuffle(); // TODO: this is wrong (use discard function)
       c = super.getCard();
       if(!c) {
         c = new Card(Rank.Unknown, Suit.Unknown); // never gets here

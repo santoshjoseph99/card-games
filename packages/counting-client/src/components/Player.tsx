@@ -11,20 +11,24 @@ export interface IPlayerProps {
   disableHit: boolean;
   actionCb: (p: number, x: boolean) => void;
   name: string;
+  handEnded: boolean;
   score: number;
+  disableStand: boolean;
 }
 
 const Player: React.FC<IPlayerProps> = (props: IPlayerProps) => {
-  const { cards, actionCb, score, disableHit } = props;
+  const { cards, actionCb, score, disableHit, handEnded, disableStand } = props;
   const getCard = React.useCallback(() => actionCb(1, true), [actionCb]);
-  const stand = React.useCallback(() => actionCb(1, false), [actionCb]);
+  const onStand = React.useCallback(() => {
+    actionCb(1, false);
+  }, [actionCb]);
 
   return (
     <div className={css(styles.playerContainer)}>
       <Label>Player: {score}</Label>
       <div className={css(styles.buttonContainer)}>
         <DefaultButton onClick={getCard} disabled={disableHit}>Hit</DefaultButton>
-        <DefaultButton onClick={stand}>Stand</DefaultButton>
+        <DefaultButton onClick={onStand} disabled={disableStand}>Stand</DefaultButton>
       </div>
       <CardsContainer list={cards} size={CardSize.medium} />
     </div>

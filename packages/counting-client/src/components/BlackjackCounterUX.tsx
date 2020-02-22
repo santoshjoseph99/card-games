@@ -31,6 +31,7 @@ interface IAppState {
   dealer: Dealer;
   cards: Card[];
   score: Score;
+  disableStand: boolean;
 }
 
 class BlackjackCounterUX extends React.Component<{}, IAppState> {
@@ -40,10 +41,12 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
   private dealer: Dealer;
   private cards: Card[];
   private score: Score;
+  private disableStand: boolean;
 
   constructor(props: any) {
     super(props);
     this.handEnded = false;
+    this.disableStand = false;
     this.blackjackCounter = new BlackjackCounter();
     this.player = {
       cards: [],
@@ -67,6 +70,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       dealer: this.dealer,
       cards: [],
       score: this.score,
+      disableStand: this.disableStand,
     }
   }
 
@@ -128,11 +132,13 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       });
     } else {
       this.player.disableHit = true;
+      this.disableStand = true;
       this.dealer.cards[1].faceUp = true;
       this.setState({
         player: this.player,
         dealer: this.dealer,
         cards: this.cards,
+        disableStand: this.disableStand,
       });
       if (this.player.score > 21 || Hand.isNatural(this.player.cards)) {
         this.setHandResult();
@@ -191,10 +197,11 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
 
   newHand = async () => {
     this.handEnded = false;
+    this.disableStand = false;
     this.player = {
       cards: [],
       score: 0,
-      disableHit: false
+      disableHit: false,
     };
     this.dealer = {
       cards: [],
@@ -205,6 +212,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
       dealer: this.dealer,
       handEnded: false,
       score: this.score,
+      disableStand: false,
     });
     await this.blackjackCounter.startHand(this.cardCallback.bind(this));
   }
@@ -248,6 +256,8 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
           score={this.state.player.score}
           cards={this.state.player.cards}
           actionCb={this.actionCallback.bind(this)}
+          handEnded={this.state.handEnded}
+          disableStand={this.state.disableStand}
           disableHit={this.state.player.disableHit} />
         <Dealer
           cards={this.state.dealer.cards}
