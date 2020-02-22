@@ -17,7 +17,7 @@ export interface IPlayerProps {
 }
 
 const Player: React.FC<IPlayerProps> = (props: IPlayerProps) => {
-  const { cards, actionCb, score, disableHit, handEnded, disableStand } = props;
+  const { cards, actionCb, score, disableHit, disableStand } = props;
   const getCard = React.useCallback(() => actionCb(1, true), [actionCb]);
   const onStand = React.useCallback(() => {
     actionCb(1, false);

@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import BlackjackCounterUX from './components/BlackjackCounterUX';
+import { BlackjackCounter } from 'blackjack-counting';
 
 /*
 * blackjack play. 
@@ -25,7 +26,7 @@ import BlackjackCounterUX from './components/BlackjackCounterUX';
 
 class App extends React.Component<{}, {}> {
   render() {
-    return <BlackjackCounterUX />;
+    return <BlackjackCounterUX blackjackCounter={new BlackjackCounter()} />;
   }
 }
 

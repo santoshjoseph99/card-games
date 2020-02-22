@@ -34,7 +34,183 @@ interface IAppState {
   disableStand: boolean;
 }
 
-class BlackjackCounterUX extends React.Component<{}, IAppState> {
+function getHandResult(score:Score) {
+  return `${score.message}: Player ${score.playerWin} Dealer ${score.dealerWin} Push ${score.push}`;
+}
+
+function setHandResult(blackjackCounter:BlackjackCounter, dealer:Dealer, player:Player, score:Score) {
+  const dealerScores = blackjackCounter.getBlackjackScore(dealer.cards);
+  const dealerScore = blackjackCounter.getHighestNonBustScore(dealerScores);
+  const playerScores = blackjackCounter.getBlackjackScore(player.cards);
+  const playerScore = blackjackCounter.getHighestNonBustScore(playerScores);
+
+  if (playerScore === 0) {
+    score.message = 'Dealer wins, Player busts';
+    score.dealerWin += 1;
+  } else if (dealerScore === 0) {
+    score.message = 'Player wins, Dealer busts';
+    score.playerWin += 1;
+  } else if (playerScore === dealerScore) {
+    score.message = 'Push!';
+    score.push += 1;
+  } else if (playerScore > dealerScore) {
+    score.message = 'Player Wins';
+    score.playerWin += 1;
+  } else if (playerScore < dealerScore) {
+    score.message = 'Dealer Wins';
+    score.dealerWin += 1;
+  }
+}
+
+interface IBlackjackCounterProps {
+  blackjackCounter: BlackjackCounter;
+}
+
+const BlackjackCounterUX = (props:IBlackjackCounterProps) => {
+  const {blackjackCounter} = props;
+  const [player, setPlayer] = React.useState({
+    cards: [],
+    score: 0,
+    disableHit: false,
+  });
+  const [dealer, setDealer] = React.useState({
+    cards: [],
+    score: 0
+  });
+  const [cards, setCards] = React.useState<Card[]>([]);
+  const [gameScore, setGameScore] = React.useState({
+    playerWin: 0,
+    dealerWin: 0,
+    push: 0,
+    message: ''
+  });
+  const [handEnded, setHandEnded] = React.useState(false);
+  const [disableStand, setDisableStand] = React.useState(false);
+  const cardCallback = React.useCallback((playerNum:number, card:Card) => {
+    if (playerNum === 0) {
+      setDealer(Object.assign(dealer, {cards: [...cards, card]}));
+      setCards([...cards, card]);
+      const scores = blackjackCounter.getBlackjackScore(dealer.cards);
+      dealer.score = blackjackCounter.getHighestNonBustScore(scores);
+      if (dealer.cards.length === 2 && Hand.isNatural(dealer.cards)) {
+        player.disableHit = true;
+        setPlayer(player);
+        setDealer(dealer);
+        setHandEnded(true);
+      }
+      if (dealer.cards.length === 2) {
+        card.faceUp = Hand.isNatural(dealer.cards) ? true : false;
+      }
+    } else {
+      setPlayer(Object.assign(player, {cards: [...cards, card]}));
+      setCards([...cards, card]);
+      const scores = blackjackCounter.getBlackjackScore(player.cards);
+      player.score = blackjackCounter.getHighestNonBustScore(scores);
+      if (player.cards.length === 2 && Hand.isNatural(player.cards)) {
+        player.disableHit = true;
+      }
+      setPlayer(player);
+    }
+  }, [blackjackCounter, cards, dealer, player]);
+  const newHand = React.useCallback(() => {
+    setHandEnded(false);
+    setDisableStand(false);
+    setPlayer({
+      cards: [],
+      score: 0,
+      disableHit: false,
+    });
+    setDealer({
+      cards: [],
+      score: 0,
+    });
+    blackjackCounter.startHand(cardCallback);
+  }, [blackjackCounter, cardCallback]);
+  const actionCallback = React.useCallback(async (playerNum: number, hit: boolean) => {
+    if (hit) {
+      const card = await blackjackCounter.getCard();
+      setCards([...cards, card]);
+      setPlayer(Object.assign(player, {cards: [...cards, card]}));
+      const scores = blackjackCounter.getBlackjackScore(player.cards);
+      const score = blackjackCounter.getHighestNonBustScore(scores);
+      if (score) {
+        player.score = score;
+      } else {
+        player.score = blackjackCounter.getLowestBustScore(scores);
+        player.disableHit = true;
+      }
+    } else {
+      player.disableHit = true;
+      setDisableStand(true);
+      // dealer.cards[1].faceUp = true;
+      setDealer(Object.assign(dealer, {cards:[dealer.cards[0], Object.assign(dealer.cards[1], {faceUp: true})]}));
+      setPlayer(player);
+      if (player.score > 21 || Hand.isNatural(player.cards)) {
+        setHandResult(blackjackCounter, dealer, player, gameScore);
+        setGameScore(gameScore);
+        setHandEnded(true);
+        return;
+      }
+      let scores = blackjackCounter.getBlackjackScore(dealer.cards);
+      let score = blackjackCounter.getHighestNonBustScore(scores);
+      if (score) {
+        while (score < 17) {
+          const card = await blackjackCounter.getCard();
+          setCards([...cards, card]);
+          setDealer(Object.assign(dealer, {cards: [...cards, card]}));
+          scores = blackjackCounter.getBlackjackScore(dealer.cards);
+          score = blackjackCounter.getHighestNonBustScore(scores);
+          dealer.score = score === 0 ?
+            blackjackCounter.getLowestBustScore(scores) : score;
+          setPlayer(player);
+          setDealer(dealer);
+          setCards(cards);
+          if (score === 0) {
+            break;
+          }
+        }
+      } else {
+        //bust
+      }
+      setHandResult(blackjackCounter, dealer, player, gameScore);
+      setGameScore(gameScore);
+      setHandEnded(true);
+    }
+  }, [blackjackCounter, cards, dealer, gameScore, player]);
+  React.useEffect(() => {
+    blackjackCounter.shuffle();
+    blackjackCounter.startGame();
+    blackjackCounter.startHand(cardCallback);
+  });
+
+  return (
+    <div>
+      <PrimaryButton onClick={newHand}>New Hand</PrimaryButton>
+      <Player
+        name={'me'}
+        score={player.score}
+        cards={player.cards}
+        actionCb={actionCallback}
+        handEnded={handEnded}
+        disableStand={disableStand}
+        disableHit={player.disableHit} />
+      <Dealer
+        cards={dealer.cards}
+        score={dealer.score} />
+      <div className={css(styles.winnerContainer)}>
+        {handEnded &&
+          <span className={css(styles.winner)}>
+            Result: {getHandResult(gameScore)}
+          </span>}
+      </div>
+      <Count count={blackjackCounter.count} />
+      <Cards cards={cards} getCount={blackjackCounter.getCount} />
+    </div>
+  );
+}
+
+/*
+class BlackjackCounterUX2 extends React.Component<{}, IAppState> {
   private blackjackCounter: BlackjackCounter;
   private handEnded: boolean;
   private player: Player;
@@ -45,7 +221,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
 
   constructor(props: any) {
     super(props);
-    this.handEnded = false;
+    handEnded = false;
     this.disableStand = false;
     this.blackjackCounter = new BlackjackCounter();
     this.player = {
@@ -74,11 +250,6 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
     }
   }
 
-  /**
-   * called by blackjackCounter to deal a card
-   * @param player 
-   * @param card 
-   */
   cardCallback(playerNum: number, card: Card) {
     if (playerNum === 0) {
       this.dealer.cards.push(card);
@@ -109,11 +280,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
     });
   }
 
-  /**
-   * called by the player/dealer component to handle the hit/stand action
-   * @param player 
-   * @param hit 
-   */
+x
   async actionCallback(player: number, hit: boolean) {
     if (hit) {
       const card = await this.blackjackCounter.getCard();
@@ -274,6 +441,7 @@ class BlackjackCounterUX extends React.Component<{}, IAppState> {
     );
   }
 }
+*/
 
 const styles = StyleSheet.create({
   winnerContainer: {
