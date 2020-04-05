@@ -1,0 +1,1 @@
+{"version":3,"file":"idealer-strategy.d.ts","sourceRoot":"","sources":["../../src/interfaces/idealer-strategy.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAC;AAE9B,MAAM,CAAC,OAAO,WAAW,eAAe;IACtC,WAAW,IAAM,OAAO,CAAC;IACzB,OAAO,CAAC,YAAY,EAAE,IAAI,EAAE,EAAE,OAAO,EAAE,IAAI,GAAI,OAAO,CAAC;CACxD"}
