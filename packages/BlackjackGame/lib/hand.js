@@ -10,16 +10,15 @@ class Hand {
         return strategy.valid(cards);
     }
     static isSoft(cards) {
-        if (cards.length === 2 && Hand.hasAce(cards)) {
-            return true;
-        }
-        return false;
+        return cards.length === 2 && Hand.hasAce(cards);
+    }
+    static isSoftSeventeen(cards) {
+        return cards.length === 2 &&
+            cards[0].rank === deckjs_1.Rank.Ace && cards[1].rank === deckjs_1.Rank.Six ||
+            cards[0].rank === deckjs_1.Rank.Six && cards[1].rank === deckjs_1.Rank.Ace;
     }
     static isHard(cards) {
-        if (cards.length === 2 && !Hand.hasAce(cards)) {
-            return true;
-        }
-        return false;
+        return cards.length === 2 && !Hand.hasAce(cards);
     }
     static hasAce(cards) {
         return cards.some(Hand.isAce);
@@ -84,10 +83,10 @@ class Hand {
         const handValues = handsList.map(list => Hand.getHandValue(list));
         return _.uniq(handValues).sort();
     }
-    getHighestNonBustScore(scores) {
+    static getHighestNonBustScore(scores) {
         return _.max(scores.filter(x => x < 22)) || 0;
     }
-    getLowestBustScore(scores) {
+    static getLowestBustScore(scores) {
         return _.min(scores.filter(x => x > 21)) || 0;
     }
 }

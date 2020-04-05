@@ -8,4 +8,5 @@ export default interface IPlayerAction {
   maxBet?:number;
   amount?:number;
   availableActions?:Actions[]
+  handEnded?: boolean;
 }

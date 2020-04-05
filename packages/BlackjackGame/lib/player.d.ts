@@ -15,6 +15,8 @@ export default class Player {
     dealerUpCard: Card | undefined;
     burnCard: Card | undefined;
     cards: Card[];
+    handSettled: boolean;
+    handEnded: boolean;
     constructor(name: string, money: number);
     getInfo(): IPlayerInfo;
     tableAction(data: ITableAction): void | Error;

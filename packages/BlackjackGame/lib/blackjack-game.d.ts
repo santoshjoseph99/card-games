@@ -1,4 +1,4 @@
-import { Card } from "deckjs";
+import { Card, Rank, Suit } from "deckjs";
 import Actions from './actions';
 import { PlayerActionCb, TableActionCb } from './interfaces/callbacks';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import SixDeckStrategy from './sixdeck-strategy';
 import SplitStrategy from './split-strategy';
 import TableStrategy from './table-strategy';
 import Player from "./player";
+export { Card, Rank, Suit };
 interface IAllStrategies {
     insurance: InsuranceStrategy;
     doubleDown: DoubleDownStrategy;
@@ -45,8 +46,11 @@ export default class BlackjackGame {
     private step5;
     private step6;
     private step7;
+    private getPlayersForSettlement;
+    private getDealerCard;
+    private shouldDealerGetAnotherCard;
     private getCard;
-    private dealCardsOnce;
+    private dealOneCardForAll;
+    private getScore;
 }
-export {};
 //# sourceMappingURL=blackjack-game.d.ts.map

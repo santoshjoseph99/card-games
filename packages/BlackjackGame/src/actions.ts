@@ -18,6 +18,8 @@ enum Actions {
   payOut = 'payOut',
   placeBet = 'placeBet',
   playHand = 'playHand',
+  playerStartHand = 'playerStartHand',
+  playerEndHand = 'playerEndHand',
   playerBetAmount = 'playerBetAmount',
   playerCardDown = 'playerCardDown',
   playerCardUp = 'playerCardUp',

@@ -18,6 +18,8 @@ export default class Player {
   dealerUpCard: Card|undefined;
   burnCard: Card|undefined;
   cards:Card[];
+  handSettled: boolean;
+  handEnded: boolean;
 
   constructor (name:string, money:number) {
     this.position = -1
@@ -27,6 +29,8 @@ export default class Player {
     this.cards = [];
     this.bet = 0;
     this.insuranceBet = 0;
+    this.handEnded = false;
+    this.handSettled = false;
   }
 
   public getInfo () :IPlayerInfo {
@@ -74,6 +78,7 @@ export default class Player {
         throw new Error(`Could not handle action, ${data.action.toString()}`)
     }
   }
+
   public playerAction (data:IPlayerAction):IPlayerResult|null|Error {
     if(!data) {
       throw new Error('Invalid input')
@@ -93,12 +98,18 @@ export default class Player {
         this.cards.push(data.card || new Card(Rank.Joker, Suit.Joker))
         break
       case actions.collectBet:
+        // nothing to do.  money was taken out in startHand
         break
+      case actions.payOut:
+        this.handEnded = true;
+        break;
       case actions.insurancePayout:
         this.money += data.amount || 0
+        this.handEnded = true;
         break
       case actions.push:
         this.money += this.bet
+        this.handEnded = true;
         break
       case actions.playHand:
         if (data && data.availableActions && data.availableActions.length > 0) {
@@ -110,6 +121,11 @@ export default class Player {
           }
         }
         break
+      case actions.playerStartHand:
+        this.handEnded = false;
+        break;
+      case actions.playerEndHand:
+        break;
       case actions.endHand:
       case actions.endGame:
         break

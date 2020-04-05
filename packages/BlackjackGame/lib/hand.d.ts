@@ -5,6 +5,7 @@ export default class Hand {
     static canSplitHand(cards: Card[], strategy: ISplitStrategy): boolean;
     static canDoubleDown(cards: Card[], strategy: IDoubleDownStrategy): boolean;
     static isSoft(cards: Card[]): boolean;
+    static isSoftSeventeen(cards: Card[]): boolean;
     static isHard(cards: Card[]): boolean;
     static hasAce(cards: Card[]): boolean;
     static isAce(card: Card): boolean;
@@ -15,8 +16,8 @@ export default class Hand {
     static getHands(cards: Card[]): Card[][];
     static getHandsHelper(cards: Card[], results: Card[][]): void;
     static getHandValue(cards: Card[]): number;
-    static getHandValues(cards: Card[]): any;
-    getHighestNonBustScore(scores: number[]): number;
-    getLowestBustScore(scores: number[]): number;
+    static getHandValues(cards: Card[]): number[];
+    static getHighestNonBustScore(scores: number[]): number;
+    static getLowestBustScore(scores: number[]): number;
 }
 //# sourceMappingURL=hand.d.ts.map

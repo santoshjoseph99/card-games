@@ -143,6 +143,22 @@ describe('Hand', function () {
       expect(result[1]).to.equal(21);
       expect(result[2]).to.equal(31);
       expect(result[3]).to.equal(41);
+    });
+    it('go through each 2 set hands', () => {
+      const ranks = [
+        Rank.Ace, Rank.Two, Rank.Three, Rank.Four,
+        Rank.Five, Rank.Six, Rank.Seven, Rank.Eight,
+        Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King];
+      // const suits = [Suit.Club, Suit.Diamond, Suit.Heart, Suit.Spade];
+      for(let r1 = 0; r1 < ranks.length; r1++) {
+        for(let r2 = 0; r2 < ranks.length; r2++) {
+          const result = Hand.getHandValues([
+            new Card(ranks[r1], Suit.Club),
+            new Card(ranks[r2], Suit.Diamond)
+          ]);
+          // expect(result).to.e
+        }
+      }
     })
-  })
+  });
 });

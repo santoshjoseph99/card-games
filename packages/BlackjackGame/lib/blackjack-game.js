@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const deckjs_1 = require("deckjs");
+exports.Card = deckjs_1.Card;
+exports.Rank = deckjs_1.Rank;
+exports.Suit = deckjs_1.Suit;
 const actions_1 = require("./actions");
 const rxjs_1 = require("rxjs");
 const actions_2 = require("./actions");
@@ -114,18 +117,20 @@ class BlackjackGame {
     }
     dealerUpdate(action) {
     }
+    // step 1: shuffle deck, burn card
     step1() {
         this.tableActions.next({ action: actions_1.default.startGame });
         this.strategies.deck.shuffleDeck();
         this.tableActions.next({ action: actions_1.default.shuffle });
         this.strategies.deck.setEndIdx(this.strategies.table.getEndDeckIndex());
         this.tableActions.next({ action: actions_1.default.setEndCard });
-        this.strategies.deck.setEndIdx(260);
+        //TODO: burn card optional?
         this.tableActions.next({
             action: actions_1.default.burnCardUp,
             card: this.strategies.deck.getCard()
         });
     }
+    // step 2: get player bets
     step2() {
         this.dealerUpdate(actions_1.default.startHand);
         this.getValidPlayers().forEach(p => {
@@ -138,39 +143,49 @@ class BlackjackGame {
                 p.sittingOut = true;
                 return;
             }
+            p.bet = result.amount || 0;
             this.tableActions.next({ action: actions_1.default.playerBetAmount, amount: result.amount, player: p });
         });
     }
+    // step 3: deal all cards
     step3() {
-        this.dealCardsOnce();
-        this.dealCardsOnce();
+        this.dealOneCardForAll();
+        this.dealOneCardForAll();
         this.tableActions.next({
             action: actions_1.default.exposeDealerCard,
             card: this.dealer.cards[0]
         });
     }
+    // step 4: check insurance
     step4() {
         if (this.strategies.insurance.valid(this.dealer.cards[0], this.dealer.cards[1])) {
             this.getValidPlayers().forEach(p => {
                 var _a;
                 const amount = this.strategies.insurance.amount(p.bet);
                 const result = p.cb && p.cb({ action: actions_1.default.insurance, amount });
-                if (((_a = result) === null || _a === void 0 ? void 0 : _a.amount) === amount) {
+                if ((_a = result) === null || _a === void 0 ? void 0 : _a.amount) {
                     p.insuranceBet = result.amount;
                 }
             });
         }
     }
+    // step 5: play hand 
+    //  1. check dealer blackjack
+    //  2. player blackjacks
+    //  3. player hands
     step5() {
+        console.log('step5a`:', this.dealer.cards);
         if (hand_1.default.isNatural(this.dealer.cards)) {
             this.getValidPlayers().forEach(p => {
+                p.cb && p.cb({ action: actions_1.default.playerStartHand });
+                this.tableActions.next({ action: actions_1.default.playerStartHand, player: p });
                 if (p.insuranceBet) {
                     this.tableActions.next({ action: actions_1.default.collectBet, player: p });
                     p.cb && p.cb({ action: actions_1.default.collectBet });
                     this.tableActions.next({ action: actions_1.default.insurancePayout, player: p });
                     p.cb && p.cb({
                         action: actions_1.default.insurancePayout,
-                        amount: this.strategies.insurance.payout(p.insuranceBet)
+                        amount: this.strategies.insurance.payout(p.insuranceBet),
                     });
                 }
                 else if (!hand_1.default.isNatural(p.getInfo().cards)) {
@@ -181,14 +196,25 @@ class BlackjackGame {
                     this.tableActions.next({ action: actions_1.default.push, player: p });
                     p.cb && p.cb({ action: actions_1.default.push });
                 }
+                p.cb && p.cb({ action: actions_1.default.playerEndHand });
+                this.tableActions.next({ action: actions_1.default.playerEndHand, player: p });
             });
         }
         else {
             this.getValidPlayers().forEach(p => {
                 var _a;
+                p.cb && p.cb({ action: actions_1.default.playerStartHand });
+                this.tableActions.next({ action: actions_1.default.playerStartHand, player: p });
                 let play = true;
+                if (hand_1.default.isNatural(p.cards)) {
+                    p.cb && p.cb({
+                        action: actions_1.default.payOut,
+                        amount: this.strategies.payout.getPayout(p.bet, true)
+                    });
+                    play = false;
+                }
                 while (play) {
-                    console.log('actions:', this.getAvailableActions(p));
+                    // console.log('actions:', this.getAvailableActions(p));
                     const result = p.cb && p.cb({
                         action: actions_1.default.playHand,
                         availableActions: this.getAvailableActions(p)
@@ -226,14 +252,73 @@ class BlackjackGame {
                             break;
                     }
                 }
+                p.cb && p.cb({ action: actions_1.default.playerEndHand });
+                this.tableActions.next({ action: actions_1.default.playerEndHand, player: p });
             });
         }
     }
+    // step 6: 
+    //  1. dealer hand (if any players)
+    //  2. payouts
+    //  3. end hand
     step6() {
+        const players = this.getPlayersForSettlement();
+        this.tableActions.next({ action: actions_1.default.dealerCardUp, card: this.dealer.cards[1] });
+        if (players.length === 0) {
+            this.tableActions.next({ action: actions_1.default.endHand });
+            return;
+        }
+        while (this.shouldDealerGetAnotherCard()) {
+            this.getDealerCard();
+        }
+        const dealerValues = hand_1.default.getHandValues(this.dealer.cards);
+        const dealerScore = hand_1.default.isHandBusted(dealerValues) ?
+            0 : hand_1.default.getHighestNonBustScore(dealerValues);
+        players.forEach(p => {
+            const playerScore = this.getScore(p.cards);
+            if (playerScore > dealerScore) {
+                const payOut = this.strategies.payout.getPayout(p.bet, false);
+                p.cb && p.cb({
+                    action: actions_1.default.payOut,
+                    amount: payOut
+                });
+                this.tableActions.next({ action: actions_1.default.payOut, player: p, amount: payOut });
+            }
+            else if (playerScore < dealerScore) {
+                p.cb && p.cb({ action: actions_1.default.collectBet });
+                this.tableActions.next({ action: actions_1.default.collectBet, player: p });
+            }
+            else {
+                p.cb && p.cb({ action: actions_1.default.push });
+                this.tableActions.next({ action: actions_1.default.push, player: p });
+            }
+        });
         this.tableActions.next({ action: actions_1.default.endHand });
     }
+    // step 7: end game?
     step7() {
         this.tableActions.next({ action: actions_1.default.endGame });
+    }
+    getPlayersForSettlement() {
+        return this.getValidPlayers().filter(p => !p.handEnded);
+    }
+    getDealerCard() {
+        const dealerCard = this.strategies.deck.getCard();
+        if (dealerCard) {
+            this.dealer.action(actions_1.default.dealerCardUp, dealerCard);
+            this.tableActions.next({ action: actions_1.default.dealerCardUp, card: dealerCard });
+        }
+        else {
+            // TODO:
+        }
+    }
+    shouldDealerGetAnotherCard() {
+        const values = hand_1.default.getHandValues(this.dealer.cards);
+        if (hand_1.default.isHandBusted(values)) {
+            return false;
+        }
+        const score = hand_1.default.getHighestNonBustScore(values);
+        return score < 17;
     }
     getCard(p) {
         let card = this.strategies.deck.getCard();
@@ -249,7 +334,7 @@ class BlackjackGame {
         }
         return card;
     }
-    dealCardsOnce() {
+    dealOneCardForAll() {
         const dealerCard = this.strategies.deck.getCard();
         this.tableActions.next({ action: actions_1.default.dealerCardDown, card: dealerCard });
         this.dealer.action(actions_1.default.dealerCardDown, dealerCard || new deckjs_1.Card(deckjs_1.Rank.Joker, deckjs_1.Suit.Joker));
@@ -263,6 +348,12 @@ class BlackjackGame {
             p.cb && p.cb({ action: actions_1.default.playerCardUp, card });
             this.tableActions.next({ action: actions_1.default.playerCardUp, card, player: p });
         });
+    }
+    getScore(cards) {
+        const values = hand_1.default.getHandValues(cards);
+        return hand_1.default.isHandBusted(values) ?
+            hand_1.default.getLowestBustScore(values) :
+            hand_1.default.getHighestNonBustScore(values);
     }
 }
 exports.default = BlackjackGame;

@@ -12,6 +12,8 @@ class Player {
         this.cards = [];
         this.bet = 0;
         this.insuranceBet = 0;
+        this.handEnded = false;
+        this.handSettled = false;
     }
     getInfo() {
         return {
@@ -76,12 +78,18 @@ class Player {
                 this.cards.push(data.card || new deckjs_1.Card(deckjs_1.Rank.Joker, deckjs_1.Suit.Joker));
                 break;
             case actions_1.default.collectBet:
+                // nothing to do.  money was taken out in startHand
+                break;
+            case actions_1.default.payOut:
+                this.handEnded = true;
                 break;
             case actions_1.default.insurancePayout:
                 this.money += data.amount || 0;
+                this.handEnded = true;
                 break;
             case actions_1.default.push:
                 this.money += this.bet;
+                this.handEnded = true;
                 break;
             case actions_1.default.playHand:
                 if (data && data.availableActions && data.availableActions.length > 0) {
@@ -93,6 +101,11 @@ class Player {
                         return { action: actions_1.default.hit };
                     }
                 }
+                break;
+            case actions_1.default.playerStartHand:
+                this.handEnded = false;
+                break;
+            case actions_1.default.playerEndHand:
                 break;
             case actions_1.default.endHand:
             case actions_1.default.endGame:

@@ -3,7 +3,7 @@ import Actions from './actions';
 import IDealer from './interfaces/idealer';
 
 export default class Dealer implements IDealer {
-  public cards:any[] = [];
+  public cards:Card[] = [];
   public action (action:Actions, data:Card) {
     // console.log('--', action, data)
     if (action === Actions.dealerCardDown ||

@@ -14,17 +14,17 @@ export default class Hand {
   }
 
   public static isSoft (cards:Card[]) {
-    if (cards.length === 2 && Hand.hasAce(cards)) {
-      return true
-    }
-    return false
+    return cards.length === 2 && Hand.hasAce(cards);
+  }
+
+  public static isSoftSeventeen(cards:Card[]) {
+    return cards.length === 2 && 
+       cards[0].rank === Rank.Ace && cards[1].rank === Rank.Six ||
+       cards[0].rank === Rank.Six && cards[1].rank === Rank.Ace;
   }
 
   public static isHard (cards:Card[]) {
-    if (cards.length === 2 && !Hand.hasAce(cards)) {
-      return true
-    }
-    return false
+    return cards.length === 2 && !Hand.hasAce(cards);
   }
 
   public static hasAce (cards:Card[]) {
@@ -90,17 +90,17 @@ export default class Hand {
     return cards.reduce((acc, card) => acc + card.blackjackValue, 0)
   }
 
-  public static getHandValues (cards:Card[]) {
+  public static getHandValues (cards:Card[]): number[] {
     const handsList = Hand.getHands(cards)
     const handValues = handsList.map(list => Hand.getHandValue(list))
     return _.uniq(handValues).sort();
   }
 
-  public getHighestNonBustScore(scores: number[]): number {
+  public static getHighestNonBustScore(scores: number[]): number {
     return _.max(scores.filter(x => x < 22)) || 0;
   }
 
-  public getLowestBustScore(scores: number[]): number {
+  public static getLowestBustScore(scores: number[]): number {
     return _.min(scores.filter(x => x > 21)) || 0;
   }
 }

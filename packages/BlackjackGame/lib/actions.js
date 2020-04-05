@@ -21,6 +21,8 @@ var Actions;
     Actions["payOut"] = "payOut";
     Actions["placeBet"] = "placeBet";
     Actions["playHand"] = "playHand";
+    Actions["playerStartHand"] = "playerStartHand";
+    Actions["playerEndHand"] = "playerEndHand";
     Actions["playerBetAmount"] = "playerBetAmount";
     Actions["playerCardDown"] = "playerCardDown";
     Actions["playerCardUp"] = "playerCardUp";
