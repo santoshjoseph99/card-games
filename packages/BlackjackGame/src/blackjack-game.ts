@@ -50,6 +50,8 @@ class AllStrategies implements IAllStrategies {
     this.bet = new BetsStrategy()
     this.split = new SplitStrategy()
     this.table = new TableStrategy()
+    //TODO: logging strategy
+    //TODO: telemetry
   }
 }
 
@@ -210,8 +212,9 @@ export default class BlackjackGame {
   //  2. player blackjacks
   //  3. player hands
   private step5() {
-    console.log('step5a`:', this.dealer.cards);
+    // console.log('step5a`:', this.dealer.cards);
     if (Hand.isNatural(this.dealer.cards)) {
+      this.tableActions.next({ action: Actions.dealerCardUp, card: this.dealer.cards[1]})
       this.getValidPlayers().forEach(p => {
         p.cb && p.cb({action: Actions.playerStartHand});
         this.tableActions.next({ action: Actions.playerStartHand, player: p })
@@ -243,6 +246,7 @@ export default class BlackjackGame {
             action: Actions.payOut,
             amount: this.strategies.payout.getPayout(p.bet, true)
           });
+          this.tableActions.next({action: Actions.payOut, player: p});
           play = false;
         }
         while (play) {
@@ -294,6 +298,10 @@ export default class BlackjackGame {
   //  2. payouts
   //  3. end hand
   private step6() {
+    if (Hand.isNatural(this.dealer.cards)) {
+      this.tableActions.next({ action: Actions.endHand })
+      return;
+    }
     const players = this.getPlayersForSettlement();
     this.tableActions.next({ action: Actions.dealerCardUp, card: this.dealer.cards[1]})
     if(players.length === 0) {

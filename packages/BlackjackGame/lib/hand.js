@@ -26,6 +26,9 @@ class Hand {
     static isAce(card) {
         return card.rank === deckjs_1.Rank.Ace;
     }
+    static isAceValue(card) {
+        return card.blackjackValue === 0;
+    }
     static hasBlackjack(values) {
         return values.some(x => x === 21);
     }
@@ -53,24 +56,24 @@ class Hand {
         }
         return results;
     }
-    static getHandsHelper(cards, results) {
-        for (let i = 0; i < cards.length; i++) {
-            if (Hand.isAce(cards[i])) {
+    static getHandsHelper(cards, results, start = 0) {
+        for (let i = start; i < cards.length; i++) {
+            if (Hand.isAceValue(cards[i])) {
                 const cardsLow = _.cloneDeep(cards);
-                cardsLow[i].blackjackValue = 1;
+                cardsLow[i].setBlackjackValue(1);
                 const cardsHigh = _.cloneDeep(cards);
-                cardsHigh[i].blackjackValue = 11;
-                if (!cardsLow.find(Hand.isAce)) {
+                cardsHigh[i].setBlackjackValue(11);
+                if (!cardsLow.find((c) => c.blackjackValue === 0)) {
                     results.push(cardsLow);
                 }
                 else {
-                    Hand.getHandsHelper(cardsLow, results);
+                    Hand.getHandsHelper(cardsLow, results, i + 1);
                 }
-                if (!cardsHigh.find(Hand.isAce)) {
+                if (!cardsHigh.find((c) => c.blackjackValue === 0)) {
                     results.push(cardsHigh);
                 }
                 else {
-                    Hand.getHandsHelper(cardsHigh, results);
+                    Hand.getHandsHelper(cardsHigh, results, i + 1);
                 }
             }
         }

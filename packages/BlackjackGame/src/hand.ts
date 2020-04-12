@@ -35,6 +35,10 @@ export default class Hand {
     return card.rank === Rank.Ace;
   }
 
+  public static isAceValue (card:Card) {
+    return card.blackjackValue === 0;
+  }
+
   public static hasBlackjack (values:number[]) {
     return values.some(x => x === 21)
   }
@@ -65,22 +69,22 @@ export default class Hand {
     return results
   }
 
-  public static getHandsHelper (cards:Card[], results:Card[][]) {
-    for (let i = 0; i < cards.length; i++) {
-      if (Hand.isAce(cards[i])) {
+  public static getHandsHelper (cards:Card[], results:Card[][], start:number = 0) {
+    for (let i = start; i < cards.length; i++) {
+      if (Hand.isAceValue(cards[i])) {
         const cardsLow = _.cloneDeep(cards)
-        cardsLow[i].blackjackValue = 1
+        cardsLow[i].setBlackjackValue(1);
         const cardsHigh = _.cloneDeep(cards)
-        cardsHigh[i].blackjackValue = 11
-        if (!cardsLow.find(Hand.isAce)) {
+        cardsHigh[i].setBlackjackValue(11);
+        if (!cardsLow.find((c:Card) => c.blackjackValue === 0)) {
           results.push(cardsLow)
         } else {
-          Hand.getHandsHelper(cardsLow, results)
+          Hand.getHandsHelper(cardsLow, results, i+1)
         }
-        if (!cardsHigh.find(Hand.isAce)) {
+        if (!cardsHigh.find((c:Card) => c.blackjackValue === 0)) {
           results.push(cardsHigh)
         } else {
-          Hand.getHandsHelper(cardsHigh, results)
+          Hand.getHandsHelper(cardsHigh, results, i+1)
         }
       }
     }

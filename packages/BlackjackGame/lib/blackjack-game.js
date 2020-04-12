@@ -28,6 +28,8 @@ class AllStrategies {
         this.bet = new bets_strategy_1.default();
         this.split = new split_strategy_1.default();
         this.table = new table_strategy_1.default();
+        //TODO: logging strategy
+        //TODO: telemetry
     }
 }
 class BlackjackGame {
@@ -174,8 +176,9 @@ class BlackjackGame {
     //  2. player blackjacks
     //  3. player hands
     step5() {
-        console.log('step5a`:', this.dealer.cards);
+        // console.log('step5a`:', this.dealer.cards);
         if (hand_1.default.isNatural(this.dealer.cards)) {
+            this.tableActions.next({ action: actions_1.default.dealerCardUp, card: this.dealer.cards[1] });
             this.getValidPlayers().forEach(p => {
                 p.cb && p.cb({ action: actions_1.default.playerStartHand });
                 this.tableActions.next({ action: actions_1.default.playerStartHand, player: p });
@@ -211,6 +214,7 @@ class BlackjackGame {
                         action: actions_1.default.payOut,
                         amount: this.strategies.payout.getPayout(p.bet, true)
                     });
+                    this.tableActions.next({ action: actions_1.default.payOut, player: p });
                     play = false;
                 }
                 while (play) {
@@ -262,6 +266,10 @@ class BlackjackGame {
     //  2. payouts
     //  3. end hand
     step6() {
+        if (hand_1.default.isNatural(this.dealer.cards)) {
+            this.tableActions.next({ action: actions_1.default.endHand });
+            return;
+        }
         const players = this.getPlayersForSettlement();
         this.tableActions.next({ action: actions_1.default.dealerCardUp, card: this.dealer.cards[1] });
         if (players.length === 0) {
