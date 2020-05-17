@@ -29,7 +29,7 @@ class BlackjackDeck extends deck_1.default {
         this.index += 1;
         let c = super.getCard();
         if (!c) {
-            this.shuffle(); // TODO: this is wrong
+            this.shuffle(); // TODO: this is wrong (use discard function)
             c = super.getCard();
             if (!c) {
                 c = new card_1.default(rank_1.Rank.Unknown, suit_1.Suit.Unknown); // never gets here

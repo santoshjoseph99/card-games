@@ -8,6 +8,7 @@ export default class Card {
     constructor(rank: Rank, suit: Suit, faceUp?: boolean);
     setBlackjackValue(v: number): void;
     static getBlackjackValue(rank: Rank): number;
+    getValue(): number;
     toLongString(): string;
     toShortString(): string;
     toString(): string;
