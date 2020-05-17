@@ -32,6 +32,26 @@ class Card {
                 return -1;
         }
     }
+    getValue() {
+        switch (this.rank) {
+            case rank_1.Rank.Joker: return 1;
+            case rank_1.Rank.Two: return 2;
+            case rank_1.Rank.Three: return 3;
+            case rank_1.Rank.Four: return 4;
+            case rank_1.Rank.Five: return 5;
+            case rank_1.Rank.Six: return 6;
+            case rank_1.Rank.Seven: return 7;
+            case rank_1.Rank.Eight: return 8;
+            case rank_1.Rank.Nine: return 9;
+            case rank_1.Rank.Ten: return 10;
+            case rank_1.Rank.Jack: return 11;
+            case rank_1.Rank.Queen: return 12;
+            case rank_1.Rank.King: return 13;
+            case rank_1.Rank.Ace: return 14;
+            default:
+                return -1;
+        }
+    }
     toLongString() {
         return `${this.rank} of ${this.suit}s`;
     }
