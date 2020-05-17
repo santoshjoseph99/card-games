@@ -1,6 +1,6 @@
 {
   "name": "blackjackgame",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "play a blackjack game",
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
@@ -40,7 +40,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "deckjs": "^3.5.0",
+    "deckjs": "^3.5.1",
     "lodash": ">=4.17.13",
     "lodash-es": "^4.17.15",
     "rxjs": "^6.5.4"

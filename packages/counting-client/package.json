@@ -1,6 +1,6 @@
 {
   "name": "counting-client",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "dependencies": {
     "@babel/core": "7.8.4",
@@ -17,7 +17,7 @@
     "babel-loader": "8.0.6",
     "babel-plugin-named-asset-import": "^0.3.6",
     "babel-preset-react-app": "^9.1.1",
-    "blackjack-counting": "^3.3.0",
+    "blackjack-counting": "^3.3.1",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "css-loader": "3.4.2",
